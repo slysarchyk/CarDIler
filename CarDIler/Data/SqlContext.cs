@@ -13,18 +13,6 @@ namespace CarDIler.Models
         public DbSet<Fuel> Fuels { get; set; }
         public DbSet<Year> Years { get; set; }
 
-        private DbSet<User> users;
-
-        public DbSet<User> GetUsers()
-        {
-            return users;
-        }
-
-        public void SetUsers(DbSet<User> value)
-        {
-            users = value;
-        }
-
         public SqlContext(DbContextOptions<SqlContext> options) : base(options)
         {
             Database.EnsureCreated();

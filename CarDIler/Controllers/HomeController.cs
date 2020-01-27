@@ -59,7 +59,6 @@ namespace CarDIler.Controllers
             List<Year> years = _db.Years.ToList();
             years.Insert(0, new Year { YearName = "Всі", Id = 0 });
 
-
             var lastcar = _db.Cars.ToList();
 
             HomeViewModel hvw = new HomeViewModel
@@ -85,7 +84,10 @@ namespace CarDIler.Controllers
                     Include(f => f.Fuel).
                     Include(y => y.Year).
                     FirstOrDefaultAsync(c => c.Id == id);
-                
+
+                if (detalcar == null)
+                    return NotFound();
+
                 DetalCarViewModel dcvw = new DetalCarViewModel
                 {
                     DetalCars = detalcar
