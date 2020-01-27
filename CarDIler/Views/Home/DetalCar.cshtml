@@ -1,0 +1,70 @@
+﻿@model CarDIler.ViewModel.DetalCarViewModel
+
+@{
+    ViewData["Title"] = "Detal";
+}
+
+<div class="ftco-blocks-cover-1">
+    <div class="ftco-cover-1 innerpage overlay" style="background-image: url('@Url.Content(Model.DetalCars.Path)')">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <span class="d-block mb-3 text-white" data-aos="fade-up">@Model.DetalCars.Date</span>
+                    <h1 class="mb-4" data-aos="fade-up" data-aos-delay="100">@Model.DetalCars.Name</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 blog-content">
+                <p class="lead"><h1>@Model.DetalCars.Name</h1></p>
+                <hr />
+                @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                {
+                    <p>
+                        <span class="m-1"><a asp-action="EditCar" asp-controller="Admin" asp-route-id="@Model.DetalCars.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Редагувати"></a></span>
+                        <span class="m-1"><a asp-action="DelCar" asp-controller="Admin" asp-route-id="@Model.DetalCars.Id"><img src="~/svg/error.svg" width="25" height="25" title="Видалити"></a></span>
+                    </p>
+                    <hr />
+                    @if (Model.DetalCars.Sold == true)
+                    {
+                        <p class="lead">Status - <span class="font-weight-bold text-danger">Sold out</span></p>
+                    }
+                    else
+                    {
+                        <p class="lead">Status - <span class="font-weight-bold text-success">Sold</span></p>
+                    }
+                    <hr />
+                    <p class="lead">Price Netto - <span class="">@Model.DetalCars.PriceNetto ₴</span></p>
+                    <p class="lead">Price Brutto - @Model.DetalCars.PriceBrutto ₴</p>
+                    <p class="lead">Profit - <span class="text-success">@Model.DetalCars.Profit ₴</span></p>
+                    <hr />
+                }
+                <p class="lead">Brand - @Model.DetalCars.Brand.BrandName</p>
+                <p class="lead">Year - @Model.DetalCars.Year.YearName</p>
+                <p class="lead">Price - @Model.DetalCars.PriceBrutto ₴</p>
+                <p class="lead">Engine - @Model.DetalCars.Engine</p>
+                <p class="lead">Color - @Model.DetalCars.Color</p>
+                <p class="lead">Distance - @Model.DetalCars.Distance км</p>
+                <p class="lead">Vin code - @Model.DetalCars.Vin</p>
+                <hr />
+                <p class="lead font-weight-bold">Detail</p>
+                <p class="lead" style="white-space: pre-line">@Model.DetalCars.Desc</p>
+                <hr />
+                <p class="lead font-italic">ID car @Model.DetalCars.Id</p>
+            </div>
+            <div class="col-md-4 sidebar">
+                <div class="sidebar-box">
+                    <img src="~/images/me_foto.jpg" alt="Free Website Template by Free-Template.co" class="img-fluid mb-4 w-50 rounded-circle">
+                    <h3 class="text-black">Agent</h3>
+                    <p>Arange for a test drive - call:</p>
+                    <p>+380 63 7488553</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

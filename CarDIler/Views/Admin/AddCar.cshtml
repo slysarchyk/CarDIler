@@ -1,0 +1,112 @@
+﻿@using Microsoft.EntityFrameworkCore
+@model CarDIler.ViewModel.AddCarViewModel
+@inject SqlContext SqlContext
+@{
+    ViewData["Title"] = "Додати автомобіль";
+
+    var brands = await SqlContext.Brands.ToListAsync();
+    var brandsSelectList = brands.Select(b => new SelectListItem(b.BrandName, b.Id.ToString()));
+
+    var cats = await SqlContext.Categories.ToListAsync();
+    var catsSelectList = cats.Select(c => new SelectListItem(c.CatName, c.Id.ToString()));
+
+    var fuels = await SqlContext.Fuels.ToListAsync();
+    var fuelsSelectList = fuels.Select(f => new SelectListItem(f.FuelName, f.Id.ToString()));
+
+    var years = await SqlContext.Years.ToListAsync();
+    var yearsSelectList = years.Select(y => new SelectListItem(y.YearName, y.Id.ToString()));
+
+}
+
+
+<div class="ftco-blocks-cover-1">
+    <div class="ftco-cover-1 overlay" style="background-image: url('/rolls_royce.jpg')">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <h1>Add car</h1>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section bg-light" id="contact-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5">
+                <form asp-action="AddCar" asp-controller="Admin" method="post" enctype="multipart/form-data">
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="control-label">Name of the car</label>
+                            <input asp-for="Name" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="YearId" class="control-label">Year</label>
+                            <select type="text" class="form-control" asp-for="YearId" asp-items="@yearsSelectList" required>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Engine" class="control-label">Engine</label>
+                            <input asp-for="Engine" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Distance" class="control-label">Distance</label>
+                            <input asp-for="Distance" type="number" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PriceNetto" class="control-label">Price Netto</label>
+                            <input asp-for="PriceNetto" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="BrandId" class="control-label">Brand</label>
+                            <select type="text" class="form-control" asp-for="BrandId" asp-items="@brandsSelectList" required>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="CatId" class="control-label">Category</label>
+                            <select type="text" class="form-control" asp-for="CatId" asp-items="@catsSelectList" required>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FuelId" class="control-label">Fuel</label>
+                            <select type="text" class="form-control" asp-for="FuelId" asp-items="@fuelsSelectList" required>
+                                <option></option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Vin" class="control-label">Vin code</label>
+                            <input asp-for="Vin" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Color" class="control-label">Color</label>
+                            <input asp-for="Color" type="text" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Date" class="control-label">Date</label>
+                            <input asp-for="Date" type="date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">Photo</label>
+                            <input type="file" name="uploadedFile" required />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <textarea asp-for="Desc" type="date" class="form-control" placeholder="Detal description of the car" cols="30" rows="10" required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-6 mr-auto">
+                            <input type="submit" class="btn btn-block btn-success text-white py-3 px-5" value="Add">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

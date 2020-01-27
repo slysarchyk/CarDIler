@@ -1,0 +1,132 @@
+﻿@model CarDIler.ViewModel.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="ftco-blocks-cover-1">
+    <div class="ftco-cover-1 overlay" style="background-image: url('@Url.Content(Model.LastCar.Path)')">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <div class="feature-car-rent-box-1">
+                        <a asp-action="DetalCar" asp-controller="Home" asp-route-id="@Model.LastCar.Id"><h3>@Model.LastCar.Name</h3></a>
+                        <ul class="list-unstyled">
+                            <li>
+                                <span>Price</span>
+                                <span class="spec">@Model.LastCar.PriceBrutto ₴</span>
+                            </li>
+                            <li>
+                                <span>Distance</span>
+                                <span class="spec">@Model.LastCar.Distance км</span>
+                            </li>
+                            <li>
+                                <span>Year</span>
+                                <span class="spec">@Model.LastCar.Year.YearName</span>
+                            </li>
+                            <li>
+                                <span>Fuel</span>
+                                <span class="spec">@Model.LastCar.Fuel.FuelName</span>
+                            </li>
+                            <li>
+                                <span>Date</span>
+                                <span class="spec">@Model.LastCar.Date</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section pt-0 pb-0 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form class="trip-form" method="get">
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label for="cf-1">Car model</label>
+                            @Html.DropDownList("brand", Model.Brands as SelectList, 
+                           htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="cf-2">Category</label>
+                            @Html.DropDownList("category", Model.Categories as SelectList, 
+                           htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="cf-3">Fuel</label>
+                            @Html.DropDownList("fuel", Model.Fuels as SelectList, 
+                           htmlAttributes: new { @class = "form-control" })
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="cf-3">Year</label>
+                            @Html.DropDownList("year", Model.Years as SelectList, 
+                           htmlAttributes: new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <input type="submit" value="Search" class="btn btn-primary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.Cars)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="item-1">
+                        <a asp-action="DetalCar" asp-controller="Home" asp-route-id="@item.Id"><img src="@Url.Content(item.Path)" alt="Image" class="img-fluid"></a>
+                        <div class="item-1-contents">
+                            <div class="text-center">
+                                <h3><a asp-action="DetalCar" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a></h3>
+                                <div class="rent-price"><span>₴ @item.PriceBrutto</span></div>
+                            </div>
+                                <ul class="specs">
+                                <li>
+                                    <span>Brand</span>
+                                    <span class="spec">@item.Brand.BrandName</span>
+                                </li>
+                                <li>
+                                    <span>Distance</span>
+                                    <span class="spec">@item.Distance км</span>
+                                </li>
+                                <li>
+                                    <span>Year</span>
+                                    <span class="spec">@item.Year.YearName</span>
+                                </li>
+                                <li>
+                                    <span>Date</span>
+                                    <span class="spec">@item.Date</span>
+                                </li>
+                                @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                                {
+                                    if (item.Sold == false)
+                                    {
+                                        <li>
+                                            <span>Status</span>
+                                            <span class="spec text-success font-weight-bold">Sold</span>
+                                        </li>
+                                    }
+                                    <li>
+                                        <span class="m-1"><a asp-action="EditCar" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a></span>
+                                        <span class="m-1"><a asp-action="DelCar" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a></span>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>   

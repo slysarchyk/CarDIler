@@ -1,0 +1,126 @@
+﻿@model CarDIler.ViewModel.AdminViewModel
+
+@{
+    ViewData["Title"] = "Adminka";
+}
+
+<div class="ftco-blocks-cover-1">
+    <div class="ftco-cover-1 overlay innerpage" style="background-image: url('/images/rolls_royce.jpg')">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <a asp-controller="Admin" asp-action="AddCar">
+                        <img src="~/svg/plus.svg" width="125" height="125" title="Add new car" />
+                    </a>
+                    <a asp-controller="Admin" asp-action="AddUser">
+                        <img src="~/svg/user-3.svg" width="125" height="125" title="Add new User" />
+                    </a>
+                    <a asp-controller="Admin" asp-action="AddRole">
+                        <img src="~/svg/user-7.svg" width="125" height="125" title="Add new Role" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section bg-light">
+    <div class="container">
+
+        <div class="row justify-content-center text-center mb-5 section-2-title">
+            <div class="col-md-6">
+                <h2 class="mb-4">Statistic</h2>
+            </div>
+        </div>
+
+        <table class="table">
+            <tr><th>Name</th><th>Sum</th></tr>
+            <tr><td>Car sold</td><td><span class="text-warning">@Model.SSold</span></td></tr>
+            <tr><td>Car sold out</td><td><span class="text-danger">@Model.SSoldOut</span></td></tr>
+            <tr><td>Sold for</td><td>@Model.SSPrice ₴</td></tr>
+            <tr><td>Margin</td><td>20 %</td></tr>
+            <tr><td>All Profit</td><td><span class="font-weight-bold text-success">@Model.SSProfit ₴</span></td></tr>
+        </table>
+        <br/>
+
+        <div class="row justify-content-center text-center mb-5 section-2-title">
+            <div class="col-md-6">
+                <h2 class="mb-4">Teem</h2>
+            </div>
+        </div>
+        <div class="row align-items-stretch">
+            @foreach (var user in Model.Users)
+            {
+                <div class="col-lg-4 col-md-6 mb-5">
+                    <div class="post-entry-1 h-100 person-1">
+
+                        <img src="~/images/me_foto.jpg" alt="Image"
+                             class="img-fluid">
+
+                        <div class="post-entry-1-contents">
+                            <span class="meta">@user.Position</span>
+                            <h2>@user.Name @user.SurName</h2>
+                            <p>Login - @user.Email</p>
+                            <p>Year of birth - @user.Year</p>
+                            <p>@user.Bio</p>
+                            <a class="btn btn-sm btn-outline-primary" asp-action="ChangeRole" asp-controller="Admin" asp-route-userid="@user.Id">Права доступу</a>
+                            <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-controller="Admin" asp-route-id="@user.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <br/>
+
+        <div class="row justify-content-center text-center mb-5 section-2-title">
+            <div class="col-md-6">
+                <h2 class="mb-4 text-danger">Sold Out</h2>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.Cars)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="item-1">
+                        <a asp-action="DetalCar" asp-controller="Home" asp-route-id="@item.Id"><img src="@Url.Content(item.Path)" alt="Image" class="img-fluid"></a>
+                        <div class="item-1-contents">
+                            <div class="text-center">
+                                <h3><a asp-action="DetalCar" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a></h3>
+                                <div class="rent-price"><span>₴ @item.PriceBrutto</span></div>
+                            </div>
+                            <ul class="specs">
+                                <li>
+                                    <span>Brand</span>
+                                    <span class="spec">@item.Brand.BrandName</span>
+                                </li>
+                                <li>
+                                    <span>Distance</span>
+                                    <span class="spec">@item.Distance км</span>
+                                </li>
+                                <li>
+                                    <span>Year</span>
+                                    <span class="spec">@item.Year.YearName</span>
+                                </li>
+                                <li>
+                                    <span>Date of publication</span>
+                                    <span class="spec">@item.Date</span>
+                                </li>
+                                @if (item.Sold == true)
+                                {
+                                    <li>
+                                        <span>Status</span>
+                                        <span class="spec text-danger font-weight-bold">Sold Out</span>
+                                    </li>
+                                }
+                                <li>
+                                    <span class="m-1"><a asp-action="EditCar" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a></span>
+                                    <span class="m-1"><a asp-action="DelCar" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
