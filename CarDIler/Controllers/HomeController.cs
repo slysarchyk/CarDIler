@@ -48,27 +48,25 @@ namespace CarDIler.Controllers
             }
 
             List<Brand> brands = _db.Brands.ToList();
-            brands.Insert(0, new Brand { BrandName = "Всі", Id = 0 });
+            brands.Insert(0, new Brand { BrandName = "All", Id = 0 });
 
             List<Category> cats = _db.Categories.ToList();
-            cats.Insert(0, new Category { CatName = "Всі", Id = 0 });
+            cats.Insert(0, new Category { CatName = "All", Id = 0 });
 
             List<Fuel> fuels = _db.Fuels.ToList();
-            fuels.Insert(0, new Fuel { FuelName = "Всі", Id = 0 });
+            fuels.Insert(0, new Fuel { FuelName = "All", Id = 0 });
 
             List<Year> years = _db.Years.ToList();
-            years.Insert(0, new Year { YearName = "Всі", Id = 0 });
-
-            var lastcar = _db.Cars.ToList();
+            years.Insert(0, new Year { YearName = "All", Id = 0 });
 
             HomeViewModel hvw = new HomeViewModel
             {
-                Cars = car.Where(s => s.Sold == false).OrderByDescending(i => i.Id).ToList(),
+                Cars = car.Where(s => s.Sold == false).OrderByDescending(x => x.Id).ToList(),
                 Brands = new SelectList(brands, "Id", "BrandName"),
                 Categories = new SelectList(cats, "Id", "CatName"),
                 Fuels = new SelectList(fuels, "Id", "FuelName"),
                 Years = new SelectList(years, "Id", "YearName"),
-                LastCar = lastcar.Where(s => s.Sold == false).Last()
+                LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).First()
             };
 
             return View(hvw);

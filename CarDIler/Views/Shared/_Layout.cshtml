@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="~/fonts/flaticon/font/flaticon.css">
     <link rel="stylesheet" href="~/css/aos.css">
 
+    <link rel="stylesheet" href="fancybox/jquery.fancybox.css" type="text/css" media="screen"/>
+
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="~/css/style.css">
 
@@ -68,20 +70,20 @@
                                             <input type="submit" value="Admin" class="btn btn-outline-warning" />
                                         </form>
                                     </li>
-                                 }
-                                    @if (User.Identity.IsAuthenticated)
-                                    {
-                                        <li class="nav-link text-success">@User.Identity.Name</li>
-                                        <li>
-                                            <form method="post" asp-controller="Account" asp-action="LogOff">
-                                                <input type="submit" value="Log off" class="btn btn-outline-danger" />
-                                            </form>
-                                        </li>
-                                    }
-                                    else
-                                    {
-                                        <li><a asp-controller="Account" asp-action="Login" class="nav-link">Login up</a></li>
-                                    }
+                                }
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <li class="nav-link text-success">@User.Identity.Name</li>
+                                    <li>
+                                        <form method="post" asp-controller="Account" asp-action="LogOff">
+                                            <input type="submit" value="Log off" class="btn btn-outline-danger" />
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a asp-controller="Account" asp-action="Login" class="nav-link">Login up</a></li>
+                                }
                             </ul>
                         </nav>
                     </div>
@@ -142,6 +144,7 @@
     <script src="~/js/aos.js"></script>
 
     <script src="~/js/main.js"></script>
+
 
 </body>
 
