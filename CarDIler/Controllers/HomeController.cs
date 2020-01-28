@@ -22,8 +22,10 @@ namespace CarDIler.Controllers
             _appEnvironment = appEnvironment;
         }
 
-        public IActionResult Index(int? brand, int? category, int? fuel, int? year)
+        public IActionResult Index(int? brand, int? category, int? fuel, int? year, int page = 1)
         {
+            int pageSize = 6;
+
             IQueryable<Car> car = _db.Cars.
                 Include(b => b.Brand).
                 Include(c => c.Category).
@@ -59,9 +61,18 @@ namespace CarDIler.Controllers
             List<Year> years = _db.Years.ToList();
             years.Insert(0, new Year { YearName = "All", Id = 0 });
 
+            var count = car.Count();
+
+            PageViewModel pvw = new PageViewModel(count, page, pageSize);
+
             HomeViewModel hvw = new HomeViewModel
             {
-                Cars = car.Where(s => s.Sold == false).OrderByDescending(x => x.Id).ToList(),
+                Cars = car.Where(s => s.Sold == false).
+                    OrderByDescending(x => x.Id).
+                    Skip((page - 1) * pageSize).
+                    Take(pageSize).
+                    ToList(),
+                PageViewModel = pvw,
                 Brands = new SelectList(brands, "Id", "BrandName"),
                 Categories = new SelectList(cats, "Id", "CatName"),
                 Fuels = new SelectList(fuels, "Id", "FuelName"),

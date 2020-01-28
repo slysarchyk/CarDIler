@@ -91,7 +91,7 @@
                                 <h3><a asp-action="DetalCar" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a></h3>
                                 <div class="rent-price"><span>₴ @item.PriceBrutto</span></div>
                             </div>
-                                <ul class="specs">
+                            <ul class="specs">
                                 <li>
                                     <span>Brand</span>
                                     <span class="spec">@item.Brand.BrandName</span>
@@ -128,5 +128,27 @@
                 </div>
             }
         </div>
+
+        @if (Model.PageViewModel.HasPreviousPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+               class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Back
+            </a>
+        }
+        @if (Model.PageViewModel.HasNextPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+               class="btn btn-outline-dark">
+                Next
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+
+
+
     </div>
 </div>   
