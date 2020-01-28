@@ -24,7 +24,7 @@ namespace CarDIler.Controllers
 
         public IActionResult Index(int? brand, int? category, int? fuel, int? year, int page = 1)
         {
-            int pageSize = 6;
+            int pageSize = 3;
 
             IQueryable<Car> car = _db.Cars.
                 Include(b => b.Brand).
