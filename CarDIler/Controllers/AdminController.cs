@@ -34,19 +34,31 @@ namespace CarDIler.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
+            int pageSize = 6;
+
             var car = _db.Cars.
                 Include(b => b.Brand).
                 Include(c => c.Category).
                 Include(f => f.Fuel).
                 Include(y => y.Year).
                 ToList();
+
             var user = _userManager.Users.ToList();
+
+            var count = car.Count();
+            PageViewModel pvw = new PageViewModel(count, page, pageSize);
 
             AdminViewModel avm = new AdminViewModel
             {
-                Cars = car.Where(s => s.Sold == true),
+                Cars = car.Where(s => s.Sold == true).
+                OrderByDescending(x => x.Id).
+                Skip((page - 1) * pageSize).
+                Take(pageSize).
+                ToList(),
+                PageViewModels = pvw,
+
                 SSold = car.Count(s => s.Sold == false),
                 SSoldOut = car.Count(s => s.Sold == true),
                 SSPrice = car.Where(s => s.Sold == true).Sum(s => s.PriceBrutto),

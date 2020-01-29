@@ -41,7 +41,7 @@
             <tr><td>Margin</td><td>20 %</td></tr>
             <tr><td>All Profit</td><td><span class="font-weight-bold text-success">@Model.SSProfit ₴</span></td></tr>
         </table>
-        <br/>
+        <br />
 
         <div class="row justify-content-center text-center mb-5 section-2-title">
             <div class="col-md-6">
@@ -70,7 +70,7 @@
                 </div>
             }
         </div>
-        <br/>
+        <br />
 
         <div class="row justify-content-center text-center mb-5 section-2-title">
             <div class="col-md-6">
@@ -122,5 +122,25 @@
                 </div>
             }
         </div>
+
+        @if (Model.PageViewModels.HasPreviousPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModels.PageNumber - 1)"
+               class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Previous
+            </a>
+        }
+        @if (Model.PageViewModels.HasNextPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModels.PageNumber + 1)"
+               class="btn btn-outline-dark">
+                Next
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+
     </div>
 </div>

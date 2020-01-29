@@ -1,6 +1,5 @@
 ﻿using CarDIler.Data.Models.Car;
 using CarDIler.Data.Models.User;
-using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 
 namespace CarDIler.ViewModel
@@ -13,5 +12,7 @@ namespace CarDIler.ViewModel
         public int SSoldOut { get; set; }
         public double SSPrice { get; set; }
         public double SSProfit { get; set; }
+
+        public PageViewModel PageViewModels { get; set; }
     }
 }

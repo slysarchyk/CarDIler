@@ -72,7 +72,7 @@ namespace CarDIler.Controllers
                     Skip((page - 1) * pageSize).
                     Take(pageSize).
                     ToList(),
-                PageViewModel = pvw,
+                PageViewModels = pvw,
                 Brands = new SelectList(brands, "Id", "BrandName"),
                 Categories = new SelectList(cats, "Id", "CatName"),
                 Fuels = new SelectList(fuels, "Id", "FuelName"),
