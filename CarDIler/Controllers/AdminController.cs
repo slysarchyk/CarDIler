@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CarDIler.Data.Models.Car;
+using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
 using CarDIler.Models;
 using CarDIler.ViewModel;
@@ -103,6 +105,7 @@ namespace CarDIler.Controllers
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
+
                 Car cars = new Car
                 {
                     ICoverName = uploadedFile.FileName,
@@ -121,8 +124,8 @@ namespace CarDIler.Controllers
                     Vin = car.Vin,
                     Color = car.Color,
                     Desc = car.Desc,
-                    Date = car.Date
-                };
+                    Date = DateTime.Now.ToShortDateString()
+            };
                 _db.Cars.Add(cars);
                 _db.SaveChanges();
             }
@@ -164,6 +167,7 @@ namespace CarDIler.Controllers
                 car.PriceNetto = viewModel.EditCars.PriceNetto;
                 car.PriceBrutto = (0.2 * viewModel.EditCars.PriceNetto) + viewModel.EditCars.PriceNetto;
                 car.Profit = (0.18 * (0.2 * viewModel.EditCars.PriceNetto)) + (0.2 * viewModel.EditCars.PriceNetto);
+                car.Date = DateTime.Now.ToShortDateString();
 
                 await _db.SaveChangesAsync();
 
@@ -182,10 +186,27 @@ namespace CarDIler.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult AddPost() => View();
 
+        [HttpPost]
+        public ActionResult AddPost(Post post)
+        {
+            Post posts = new Post
+            {
+                Name = post.Name,
+                ShortDesc = post.ShortDesc,
+                Desc = post.Desc,
+                Date = DateTime.Now.ToShortDateString()
+            };
+
+            _db.Posts.Add(posts);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Post");
+        }
 
         //Додаємо нового користувача
-        
+
         [HttpGet]
         public IActionResult AddUser() => View();
 

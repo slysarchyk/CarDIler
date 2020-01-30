@@ -12,6 +12,9 @@
                     <a asp-controller="Admin" asp-action="AddCar">
                         <img src="~/svg/plus.svg" width="125" height="125" title="Add new car" />
                     </a>
+                    <a asp-controller="Admin" asp-action="AddPost">
+                        <img src="~/svg/add-1.svg" width="125" height="125" title="Add new Post in Blog" />
+                    </a>
                     <a asp-controller="Admin" asp-action="AddUser">
                         <img src="~/svg/user-3.svg" width="125" height="125" title="Add new User" />
                     </a>
@@ -35,7 +38,7 @@
 
         <table class="table">
             <tr><th>Name</th><th>Sum</th></tr>
-            <tr><td>Car sold</td><td><span class="text-warning">@Model.SSold</span></td></tr>
+            <tr><td>Car for sale</td><td><span class="text-warning">@Model.SSold</span></td></tr>
             <tr><td>Car sold out</td><td><span class="text-danger">@Model.SSoldOut</span></td></tr>
             <tr><td>Sold for</td><td>@Model.SSPrice ₴</td></tr>
             <tr><td>Margin</td><td>20 %</td></tr>

@@ -12,7 +12,6 @@ namespace CarDIler.ViewModel
         public SelectList Fuels { get; set; }
         public SelectList Years { get; set; }
         public PageViewModel PageViewModels { get; set; }
-        
         public Car LastCar { get; set; }
     }
 }

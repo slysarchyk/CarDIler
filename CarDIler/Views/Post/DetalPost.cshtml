@@ -1,0 +1,32 @@
+﻿@model CarDIler.ViewModel.DetalPostViewModel
+
+@{
+    ViewData["Title"] = "DetalPost";
+}
+
+<div class="ftco-blocks-cover-1">
+    <div class="ftco-cover-1 innerpage overlay" style="background-image: url('/images/rolls_royce.jpg')">
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-lg-6 text-center">
+                    <span class="d-block mb-3 text-white" data-aos="fade-up">@Model.Posts.Date</span>
+                    <h1 class="mb-4" data-aos="fade-up" data-aos-delay="100">@Model.Posts.Name</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 blog-content">
+                <p class="lead">@Model.Posts.Name</p>
+                <p class="lead" style="white-space: pre-line">@Model.Posts.Desc</p>
+                <hr />
+                <p class="lead">Date of publication: @Model.Posts.Date</p>
+            </div>
+        </div>
+    </div>
+</div>

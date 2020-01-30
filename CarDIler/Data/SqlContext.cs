@@ -1,4 +1,5 @@
 ﻿using CarDIler.Data.Models.Car;
+using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace CarDIler.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Fuel> Fuels { get; set; }
         public DbSet<Year> Years { get; set; }
+        public DbSet<Post> Posts { get; set; } 
 
         public SqlContext(DbContextOptions<SqlContext> options) : base(options)
         {
