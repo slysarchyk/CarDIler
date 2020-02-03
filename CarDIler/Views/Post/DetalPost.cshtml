@@ -26,8 +26,10 @@
                 @if (ViewContext.HttpContext.User.IsInRole("Admin"))
                 {
                     <hr/>
-                    <p class="m-1"><a asp-action="EditPost" asp-controller="Admin" asp-route-id="@Model.Posts.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a></p>
-                    <p class="m-1"><a asp-action="DelPost" asp-controller="Admin" asp-route-id="@Model.Posts.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a></p>
+                    <p class="m-1">
+                        <a asp-action="EditPost" asp-controller="Admin" asp-route-id="@Model.Posts.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a>
+                        <a asp-action="DelPost" asp-controller="Admin" asp-route-id="@Model.Posts.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a>
+                    </p>
                     <hr/>
                 }
                 <p><span class="lead" style="white-space: pre-line"></span> @Model.Posts.Desc</p>
