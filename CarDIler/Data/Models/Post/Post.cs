@@ -14,14 +14,12 @@ namespace CarDIler.Data.Models.Post
         public string Name { get; set; }
         
         [Required]
-        [MinLength(10)]
         public string ShortDesc { get; set; }
         
         [Required]
-        [Range(0, 60)]
         public string Desc { get; set; }
-        
-        [Required]
         public string Date { get; set; }
+
+        public string DateEdit { get; set; }
     }
 }

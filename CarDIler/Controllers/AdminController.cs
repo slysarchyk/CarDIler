@@ -167,7 +167,7 @@ namespace CarDIler.Controllers
                 car.PriceNetto = viewModel.EditCars.PriceNetto;
                 car.PriceBrutto = (0.2 * viewModel.EditCars.PriceNetto) + viewModel.EditCars.PriceNetto;
                 car.Profit = (0.18 * (0.2 * viewModel.EditCars.PriceNetto)) + (0.2 * viewModel.EditCars.PriceNetto);
-                car.Date = DateTime.Now.ToShortDateString();
+                car.DateEdit = DateTime.Now.ToShortDateString();
 
                 await _db.SaveChangesAsync();
 
@@ -200,6 +200,54 @@ namespace CarDIler.Controllers
             };
 
             _db.Posts.Add(posts);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Post");
+        }
+
+        public async Task<IActionResult> EditPost(int? id)
+        {
+            Post post = await _db.Posts.
+                AsNoTracking().
+                Where(x => x.Id == id).
+                SingleOrDefaultAsync();
+
+            if (post == null)
+                return NotFound();
+
+            var viewModel = new EditPostViewModel { EditPosts = post };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditPost(EditPostViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Post post = await _db.Posts.
+                    Where(x => x.Id == viewModel.EditPosts.Id).
+                    FirstOrDefaultAsync();
+                if (post == null)
+                    return NotFound();
+
+                post.Name = viewModel.EditPosts.Name;
+                post.ShortDesc = viewModel.EditPosts.ShortDesc;
+                post.Desc = viewModel.EditPosts.Desc;
+                post.DateEdit = DateTime.Now.ToShortDateString();
+
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction("Index", "Post");
+            }
+
+            return View(viewModel);
+        }
+
+        public ActionResult DelPost(int id)
+        {
+            Post post = new Post { Id = id };
+            _db.Entry(post).State = EntityState.Deleted;
             _db.SaveChanges();
 
             return RedirectToAction("Index", "Post");

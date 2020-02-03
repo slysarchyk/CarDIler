@@ -10,6 +10,8 @@ namespace CarDIler.Data.Models.Car
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
         public bool Sold { get; set; }
 
@@ -25,13 +27,15 @@ namespace CarDIler.Data.Models.Car
         public int FuelId { get; set; }
         public Fuel Fuel { get; set; }
 
+        [Required]
         public double Engine { get; set; }
 
         [Required]
         [Range(0, int.MaxValue)]
         public int Distance { get; set; }
-
+        [Required]
         public string Color { get; set; }
+        [Required]
         public string Vin { get; set; }
 
         [Required]
@@ -44,9 +48,10 @@ namespace CarDIler.Data.Models.Car
         [Range(0, double.MaxValue)]
         public double Profit { get; set; }
 
-
+        [Required]
         public string Desc { get; set; }
         public string Date { get; set; }
+        public string DateEdit { get; set; }
 
         public string ICoverName { get; set; }
         public string Path { get; set; }

@@ -33,6 +33,12 @@
                             <h2><a asp-action="DetalPost" asp-controller="Post" asp-route-id="@item.Id">@item.Name</a></h2>
                             <span class="meta d-inline-block mb-3">@item.Date</span>
                             <p>@item.ShortDesc</p>
+
+                            @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                            {
+                                <p class="m-1"><a asp-action="EditPost" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a></p>
+                                <p class="m-1"><a asp-action="DelPost" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a></p>
+                            }
                         </div>
                     </div>
                 </div>

@@ -21,8 +21,7 @@ namespace CarDIler.ViewModel
         public string Color { get; set; }
         public string Vin { get; set; }
         public double PriceNetto { get; set; }
-        public string Date { get; set; }
-
+        
         public string ICoverName { get; set; }
         public string Path { get; set; }
     }
