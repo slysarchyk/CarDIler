@@ -106,6 +106,8 @@ namespace CarDIler.Controllers
                     await uploadedFile.CopyToAsync(fileStream);
                 }
 
+                var user = await _userManager.GetUserAsync(User);
+
                 Car cars = new Car
                 {
                     ICoverName = uploadedFile.FileName,
@@ -124,8 +126,12 @@ namespace CarDIler.Controllers
                     Vin = car.Vin,
                     Color = car.Color,
                     Desc = car.Desc,
-                    Date = DateTime.Now.ToShortDateString()
-            };
+                    Date = DateTime.Now.ToShortDateString(),
+                    AddByName = user.Name,
+                    AddBySurname = user.SurName,
+                    AddByPosition = user.Position,
+                    AddByPhoneNumber = user.PhoneNumber
+                };
                 _db.Cars.Add(cars);
                 _db.SaveChanges();
             }
@@ -154,6 +160,9 @@ namespace CarDIler.Controllers
                 Car car = await _db.Cars.
                     Where(x => x.Id == viewModel.EditCars.Id).
                     FirstOrDefaultAsync();
+
+                var user = await _userManager.GetUserAsync(User);
+
                 if (car == null)
                     return NotFound();
 
@@ -168,6 +177,10 @@ namespace CarDIler.Controllers
                 car.PriceBrutto = (0.2 * viewModel.EditCars.PriceNetto) + viewModel.EditCars.PriceNetto;
                 car.Profit = (0.18 * (0.2 * viewModel.EditCars.PriceNetto)) + (0.2 * viewModel.EditCars.PriceNetto);
                 car.DateEdit = DateTime.Now.ToShortDateString();
+                car.AddByName = user.Name;
+                car.AddBySurname = user.SurName;
+                car.AddByPosition = user.Position;
+                car.AddByPhoneNumber = user.PhoneNumber;
 
                 await _db.SaveChangesAsync();
 
@@ -191,12 +204,15 @@ namespace CarDIler.Controllers
         [HttpPost]
         public ActionResult AddPost(Post post)
         {
+            //var user = _userManager.GetUserAsync(User);
+
             Post posts = new Post
             {
                 Name = post.Name,
                 ShortDesc = post.ShortDesc,
                 Desc = post.Desc,
-                Date = DateTime.Now.ToShortDateString()
+                Date = DateTime.Now.ToShortDateString(),
+                AddedBy = _userManager.GetUserAsync(User).Result.UserName
             };
 
             _db.Posts.Add(posts);
@@ -266,7 +282,7 @@ namespace CarDIler.Controllers
                 User user = new User 
                 { 
                     Email = model.Users.Email, 
-                    UserName = model.Users.Email, 
+                    UserName = model.Users.UserName, 
                     Year = model.Users.Year,
                     Name = model.Users.Name,
                     SurName = model.Users.SurName

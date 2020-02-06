@@ -37,7 +37,6 @@ namespace CarDIler.Data.Models.Car
         public string Color { get; set; }
         [Required]
         public string Vin { get; set; }
-
         [Required]
         [Range(0, double.MaxValue)]
         public double PriceNetto { get; set; }
@@ -53,6 +52,13 @@ namespace CarDIler.Data.Models.Car
         public string Date { get; set; }
         public string DateEdit { get; set; }
 
+        //AddByUser
+        public string AddByName { get; set; }
+        public string AddBySurname { get; set; }
+        public string AddByPhoneNumber { get; set; }
+        public string AddByPosition { get; set; }
+
+        //photo
         public string ICoverName { get; set; }
         public string Path { get; set; }
     }

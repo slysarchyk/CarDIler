@@ -78,14 +78,15 @@
                 }
                 
                 <hr />
-                <p class="lead font-italic">ID car @Model.DetalCars.Id</p>
+                <p class="lead font-italic">ID car @Model.DetalCars.Id By </p>
             </div>
             <div class="col-md-4 sidebar">
                 <div class="sidebar-box">
                     <img src="~/images/me_foto.jpg" alt="Free Website Template by Free-Template.co" class="img-fluid mb-4 w-50 rounded-circle">
-                    <h3 class="text-black">Agent</h3>
+                    <h3 class="text-black">@Model.DetalCars.AddByPosition</h3>
+                    <p>@Model.DetalCars.AddByName @Model.DetalCars.AddBySurname</p>
                     <p>Arange for a test drive - call:</p>
-                    <p>+380 63 7488553</p>
+                    <p>@Model.DetalCars.AddByPhoneNumber</p>
                 </div>
             </div>
         </div>

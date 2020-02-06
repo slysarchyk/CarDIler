@@ -95,14 +95,14 @@
                                 {
                                     <li class="nav-link text-success">@User.Identity.Name</li>
                                     <li>
-                                        <form method="post" asp-controller="Account" asp-action="LogOff">
+                                        <form method="post" asp-controller="Account" asp-action="Sing out">
                                             <input type="submit" value="Log off" class="btn btn-outline-danger" />
                                         </form>
                                     </li>
                                 }
                                 else
                                 {
-                                    <li><a asp-controller="Account" asp-action="Login" class="nav-link">Login up</a></li>
+                                    <li><a asp-controller="Account" asp-action="Login" class="nav-link">Sing up</a></li>
                                 }
                             </ul>
                         </nav>

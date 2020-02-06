@@ -66,6 +66,7 @@
                             <p>Login - @user.Email</p>
                             <p>Year of birth - @user.Year</p>
                             <p>@user.Bio</p>
+                            <p>@user.PhoneNumber</p>
                             <a class="btn btn-sm btn-outline-primary" asp-action="ChangeRole" asp-controller="Admin" asp-route-userid="@user.Id">Права доступу</a>
                             <a class="btn btn-sm btn-outline-danger" asp-action="Delete" asp-controller="Admin" asp-route-id="@user.Id">Delete</a>
                         </div>

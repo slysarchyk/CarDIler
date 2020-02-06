@@ -13,5 +13,6 @@ namespace CarDIler.ViewModel
         public SelectList Years { get; set; }
         public PageViewModel PageViewModels { get; set; }
         public Car LastCar { get; set; }
+        public int AvalibleCar { get; set; }
     }
 }

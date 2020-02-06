@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CarDIler.Data.Models.Post;
 using CarDIler.Models;
@@ -17,13 +15,22 @@ namespace CarDIler.Controllers
         {
             _db = context;
         }
-        public IActionResult Index()
+        public IActionResult Index(int page = 1)
         {
+            int pageSize = 3;
+
             IQueryable<Post> post = _db.Posts;
+            var count = post.Count();
+
+            PageViewModel pvm = new PageViewModel(page, pageSize, count);
 
             BlogViewModel bvw = new BlogViewModel
             {
-                Posts = post.OrderByDescending(x => x.Id).ToList()
+                Posts = post.OrderByDescending(x => x.Id).
+                    Skip((page - 1) * pageSize).
+                    Take(pageSize).
+                    ToList(),
+                PageViewModels = pvm 
             };
             
             return View(bvw);

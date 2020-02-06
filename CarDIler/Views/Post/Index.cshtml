@@ -31,7 +31,7 @@
                         <div class="post-entry-1-contents">
 
                             <h2><a asp-action="DetalPost" asp-controller="Post" asp-route-id="@item.Id">@item.Name</a></h2>
-                            <span class="meta d-inline-block mb-3">@item.Date</span>
+                            <span class="meta d-inline-block mb-3">@item.Date <span class="mx-2">by</span> @item.AddedBy</span>
                             <p>@item.ShortDesc</p>
 
                             @if (ViewContext.HttpContext.User.IsInRole("Admin"))
@@ -47,5 +47,25 @@
             }
 
         </div>
+
+        @if (Model.PageViewModels.HasPreviousPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModels.PageNumber - 1)"
+               class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Previous
+            </a>
+        }
+        @if (Model.PageViewModels.HasNextPage)
+        {
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModels.PageNumber + 1)"
+               class="btn btn-outline-dark">
+                Next
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+
     </div>
 </div>

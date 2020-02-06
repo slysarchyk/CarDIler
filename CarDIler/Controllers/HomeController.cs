@@ -77,7 +77,8 @@ namespace CarDIler.Controllers
                 Categories = new SelectList(cats, "Id", "CatName"),
                 Fuels = new SelectList(fuels, "Id", "FuelName"),
                 Years = new SelectList(years, "Id", "YearName"),
-                LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).First()
+                LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).First(),
+                AvalibleCar = _db.Cars.Count(x => x.Sold == false)
             };
 
             return View(hvw);
