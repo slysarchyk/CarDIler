@@ -8,6 +8,8 @@ using CarDIler.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using System.Text.Json;
 
 namespace CarDIler.Controllers
 {
@@ -24,7 +26,7 @@ namespace CarDIler.Controllers
 
         public IActionResult Index(int? brand, int? category, int? fuel, int? year, int page = 1)
         {
-            int pageSize = 3;
+            int pageSize = 6;
 
             IQueryable<Car> car = _db.Cars.
                 Include(b => b.Brand).
@@ -93,6 +95,7 @@ namespace CarDIler.Controllers
                     Include(c => c.Category).
                     Include(f => f.Fuel).
                     Include(y => y.Year).
+                    AsNoTracking().
                     FirstOrDefaultAsync(c => c.Id == id);
 
                 if (detalcar == null)
@@ -100,7 +103,8 @@ namespace CarDIler.Controllers
 
                 DetalCarViewModel dcvw = new DetalCarViewModel
                 {
-                    DetalCars = detalcar
+                    DetalCars = detalcar,
+                    Galerys = _db.Galeries.Where(x => x.CarId == id).AsNoTracking()
                 };
 
                 return View(dcvw);

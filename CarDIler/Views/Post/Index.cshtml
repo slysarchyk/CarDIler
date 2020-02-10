@@ -18,6 +18,15 @@
 
 <div class="site-section bg-light">
     <div class="container">
+
+        @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+        {
+            <a asp-action="AddPost"
+               asp-controller="Admin"
+               class="btn btn-outline-success">
+                Add Post
+            </a><br />
+        }
         <div class="row">
 
             @foreach (var item in Model.Posts)
@@ -25,7 +34,7 @@
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="post-entry-1 h-100">
                         <a asp-action="DetalPost" asp-controller="Post" asp-route-id="@item.Id">
-                            <img src="images/post_1.jpg" alt="Image"
+                            <img src="@Url.Content(item.CoverPath)" alt="Image"
                                  class="img-fluid">
                         </a>
                         <div class="post-entry-1-contents">

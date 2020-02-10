@@ -42,19 +42,15 @@ namespace CarDIler.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AddByName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddByPhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddByPosition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AddBySurname")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BrandId")
@@ -68,6 +64,9 @@ namespace CarDIler.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Date")
@@ -89,14 +88,8 @@ namespace CarDIler.Migrations
                     b.Property<int>("FuelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ICoverName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("PriceBrutto")
@@ -161,6 +154,26 @@ namespace CarDIler.Migrations
                     b.ToTable("Fuels");
                 });
 
+            modelBuilder.Entity("CarDIler.Data.Models.Car.Galery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Galeries");
+                });
+
             modelBuilder.Entity("CarDIler.Data.Models.Car.Year", b =>
                 {
                     b.Property<int>("Id")
@@ -184,6 +197,9 @@ namespace CarDIler.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AddedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Date")
@@ -441,6 +457,15 @@ namespace CarDIler.Migrations
                     b.HasOne("CarDIler.Data.Models.Car.Year", "Year")
                         .WithMany("Cars")
                         .HasForeignKey("YearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CarDIler.Data.Models.Car.Galery", b =>
+                {
+                    b.HasOne("CarDIler.Data.Models.Car.Car", "Cars")
+                        .WithMany("Galeries")
+                        .HasForeignKey("CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

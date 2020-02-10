@@ -40,7 +40,8 @@ namespace CarDIler.Controllers
         {
             if(id != null)
             {
-                var post = await _db.Posts.FirstOrDefaultAsync(x => x.Id == id);
+                var post = await _db.Posts.AsNoTracking().
+                    FirstOrDefaultAsync(x => x.Id == id);
 
                 if (post == null)
                     return NotFound();

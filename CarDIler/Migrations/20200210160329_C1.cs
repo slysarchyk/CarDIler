@@ -2,7 +2,7 @@
 
 namespace CarDIler.Migrations
 {
-    public partial class CD13 : Migration
+    public partial class C1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

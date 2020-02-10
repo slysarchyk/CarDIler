@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CarDIler.Data.Models.Car
 {
@@ -58,10 +59,26 @@ namespace CarDIler.Data.Models.Car
         public string AddByPhoneNumber { get; set; }
         public string AddByPosition { get; set; }
 
-        //photo
-        public string ICoverName { get; set; }
-        public string Path { get; set; }
+        public string CoverPath { get; set; }
+
+        public virtual ICollection<Galery> Galeries { get; set; }
+        public Car()
+        {
+            Galeries = new List<Galery>();
+        }
     }
+    public class Galery
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string Path { get; set; }
+        
+        public int CarId { get; set; }
+        public Car Cars { get; set; }
+    }
+
+
     public class Brand
     {
         [Key]

@@ -21,5 +21,7 @@ namespace CarDIler.Data.Models.Post
         public string Date { get; set; }
         public string DateEdit { get; set; }
         public string AddedBy { get; set; }
+
+        public string CoverPath { get; set; }
     }
 }
