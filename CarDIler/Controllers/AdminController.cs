@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CarDIler.Data.Models.About;
 using CarDIler.Data.Models.Car;
 using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
@@ -279,7 +280,41 @@ namespace CarDIler.Controllers
             return RedirectToAction("Index", "Post");
         }
 
+        //About
+        [HttpGet]
+        public ActionResult EditAbout(int id)
+        {
+            About about = _db.Abouts.
+                AsNoTracking().
+                Where(x => x.Id == id).
+                SingleOrDefault();
+            EditAboutViewModel eavw = new EditAboutViewModel { Abouts = about };
 
+            return View(eavw);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> EditAbout(EditAboutViewModel eavw)
+        {
+            if (ModelState.IsValid)
+            {
+                About about = await _db.Abouts.
+                    Where(x => x.Id == eavw.Abouts.Id).
+                    FirstOrDefaultAsync();
+                if (about == null)
+                    return NotFound();
+
+                about.Info_1 = eavw.Abouts.Info_1;
+                about.Info_2 = eavw.Abouts.Info_2;
+                about.Info_3 = eavw.Abouts.Info_3;
+                about.Info_4 = eavw.Abouts.Info_4;
+
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction("Index", "About");
+            }
+            return View(eavw);
+        }
 
         //секція користувачів
         [HttpGet]

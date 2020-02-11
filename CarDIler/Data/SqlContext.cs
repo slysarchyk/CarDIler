@@ -1,4 +1,5 @@
-﻿using CarDIler.Data.Models.Car;
+﻿using CarDIler.Data.Models.About;
+using CarDIler.Data.Models.Car;
 using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace CarDIler.Models
         public DbSet<Year> Years { get; set; }
         public DbSet<Galery> Galeries { get; set; }
         public DbSet<Post> Posts { get; set; } 
+        public DbSet<About> Abouts { get; set; }
 
         public SqlContext(DbContextOptions<SqlContext> options) : base(options)
         {
