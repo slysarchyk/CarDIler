@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarDIler.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly SqlContext _db;
@@ -79,55 +79,59 @@ namespace CarDIler.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCar(Car car, Galery galery, IFormFile cover, IFormFileCollection uploads)
         {
-            string coverPath = "/images/Cars/" + cover.FileName;
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
+            if (ModelState.IsValid)
             {
-                await cover.CopyToAsync(fileStream);
-            }
-
-            var user = await _userManager.GetUserAsync(User);
-
-            Car cars = new Car
-            {
-                Name = car.Name,
-                Sold = car.Sold,
-                YearId = car.YearId,
-                Engine = car.Engine,
-                Distance = car.Distance,
-                PriceNetto = car.PriceNetto,
-                PriceBrutto = (0.2 * car.PriceNetto) + car.PriceNetto,
-                Profit = (0.18 * (0.2 + car.PriceNetto)) + (0.2 + car.PriceNetto),
-                BrandId = car.BrandId,
-                CatId = car.CatId,
-                FuelId = car.FuelId,
-                Vin = car.Vin,
-                Color = car.Color,
-                Desc = car.Desc,
-                Date = DateTime.Now.ToShortDateString(),
-                CoverPath = coverPath,
-                AddByName = user.Name,
-                AddBySurname = user.SurName,
-                AddByPosition = user.Position,
-                AddByPhoneNumber = user.PhoneNumber
-            };
-            _db.Cars.Add(cars);
-            _db.SaveChanges();
-
-            foreach (var uploadedFile in uploads)
-            {
-                string path = "/images/" + uploadedFile.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                string coverPath = "/images/Cars/" + cover.FileName;
+                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
                 {
-                    await uploadedFile.CopyToAsync(fileStream);
+                    await cover.CopyToAsync(fileStream);
                 }
 
-                Galery galerys = new Galery { Path = path, CarId = cars.Id };
+                var user = await _userManager.GetUserAsync(User);
 
-                _db.Galeries.Add(galerys);
+                Car cars = new Car
+                {
+                    Name = car.Name,
+                    Sold = car.Sold,
+                    YearId = car.YearId,
+                    Engine = car.Engine,
+                    Distance = car.Distance,
+                    PriceNetto = car.PriceNetto,
+                    PriceBrutto = (0.2 * car.PriceNetto) + car.PriceNetto,
+                    Profit = (0.18 * (0.2 + car.PriceNetto)) + (0.2 + car.PriceNetto),
+                    BrandId = car.BrandId,
+                    CatId = car.CatId,
+                    FuelId = car.FuelId,
+                    Vin = car.Vin,
+                    Color = car.Color,
+                    Desc = car.Desc,
+                    Date = DateTime.Now.ToShortDateString(),
+                    CoverPath = coverPath,
+                    AddByName = user.Name,
+                    AddBySurname = user.SurName,
+                    AddByPosition = user.Position,
+                    AddByPhoneNumber = user.PhoneNumber
+                };
+                _db.Cars.Add(cars);
                 _db.SaveChanges();
-            }
 
-            return RedirectToAction("Index", "Home");
+                foreach (var uploadedFile in uploads)
+                {
+                    string path = "/images/" + uploadedFile.FileName;
+                    using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await uploadedFile.CopyToAsync(fileStream);
+                    }
+
+                    Galery galerys = new Galery { Path = path, CarId = cars.Id };
+
+                    _db.Galeries.Add(galerys);
+                    _db.SaveChanges();
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            return View();
         }
 
         [HttpGet]

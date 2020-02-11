@@ -7,7 +7,7 @@ namespace CarDIler.Controllers
 {
     public class AboutController : Controller
     {
-        public UserManager<User> _userManager;
+        UserManager<User> _userManager;
         public AboutController(UserManager<User> userManager)
         {
             _userManager = userManager;

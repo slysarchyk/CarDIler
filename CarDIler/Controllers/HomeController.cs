@@ -8,8 +8,6 @@ using CarDIler.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Text.Json;
 
 namespace CarDIler.Controllers
 {
@@ -26,7 +24,7 @@ namespace CarDIler.Controllers
 
         public IActionResult Index(int? brand, int? category, int? fuel, int? year, int page = 1)
         {
-            int pageSize = 6;
+            int pageSize = 3;
 
             IQueryable<Car> car = _db.Cars.
                 Include(b => b.Brand).
@@ -79,8 +77,8 @@ namespace CarDIler.Controllers
                 Categories = new SelectList(cats, "Id", "CatName"),
                 Fuels = new SelectList(fuels, "Id", "FuelName"),
                 Years = new SelectList(years, "Id", "YearName"),
-                LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).First(),
-                AvalibleCar = _db.Cars.Count(x => x.Sold == false)
+                LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).FirstOrDefault(),
+                AvalibleCar = _db.Cars.AsTracking().Count(x => x.Sold == false)
             };
 
             return View(hvw);
