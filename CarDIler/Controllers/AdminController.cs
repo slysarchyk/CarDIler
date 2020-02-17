@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using CarDIler.Data.Models.About;
 using CarDIler.Data.Models.Car;
 using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
@@ -44,9 +42,6 @@ namespace CarDIler.Controllers
 
             var car = _db.Cars.
                 Include(b => b.Brand).
-                Include(c => c.Category).
-                Include(f => f.Fuel).
-                Include(y => y.Year).
                 AsNoTracking().
                 ToList();
 
@@ -78,7 +73,7 @@ namespace CarDIler.Controllers
         public IActionResult AddCar() => View();
 
         [HttpPost]
-        public async Task<IActionResult> AddCar(Car car, Galery galery, IFormFile cover, IFormFileCollection uploads)
+        public async Task<IActionResult> AddCar(Car car, CarImages galery, IFormFile cover, IFormFileCollection uploads)
         {
             if (ModelState.IsValid)
             {
@@ -94,15 +89,15 @@ namespace CarDIler.Controllers
                 {
                     Name = car.Name,
                     Sold = car.Sold,
-                    YearId = car.YearId,
                     Engine = car.Engine,
                     Distance = car.Distance,
                     PriceNetto = car.PriceNetto,
                     PriceBrutto = (0.2 * car.PriceNetto) + car.PriceNetto,
-                    Profit = (0.18 * (0.2 + car.PriceNetto)) + (0.2 + car.PriceNetto),
+                    Profit = (0.18 * (0.2 * car.PriceNetto)) + (0.2 * car.PriceNetto),
                     BrandId = car.BrandId,
-                    CatId = car.CatId,
-                    FuelId = car.FuelId,
+                    Category = car.Category,
+                    Year = car.Year,
+                    Fuel = car.Fuel,
                     Vin = car.Vin,
                     Color = car.Color,
                     Desc = car.Desc,
@@ -124,9 +119,9 @@ namespace CarDIler.Controllers
                         await uploadedFile.CopyToAsync(fileStream);
                     }
 
-                    Galery galerys = new Galery { Path = path, CarId = cars.Id };
+                    CarImages galerys = new CarImages { Path = path, CarId = cars.Id };
 
-                    _db.Galeries.Add(galerys);
+                    _db.CarImages.Add(galerys);
                     _db.SaveChanges();
                 }
 
@@ -144,7 +139,19 @@ namespace CarDIler.Controllers
             if (car == null)
                 return NotFound();
 
-            var viewModel = new EditCarViewModel { EditCars = car };
+            var viewModel = new EditCarViewModel 
+            {
+                Name = car.Name,
+                Sold = car.Sold,
+                Desc = car.Desc,
+                Engine = car.Engine,
+                Distance = car.Distance,
+                Color = car.Color,
+                Vin = car.Vin,
+                PriceNetto = car.PriceNetto,
+                CoverPath = car.CoverPath,
+                Year = car.Year
+            };
 
             return View(viewModel);
         }
@@ -155,7 +162,7 @@ namespace CarDIler.Controllers
             if (ModelState.IsValid)
             {
                 Car car = await _db.Cars.
-                    Where(x => x.Id == viewModel.EditCars.Id).
+                    Where(x => x.Id == viewModel.Id).
                     FirstOrDefaultAsync();
 
                 var user = await _userManager.GetUserAsync(User);
@@ -163,16 +170,17 @@ namespace CarDIler.Controllers
                 if (car == null)
                     return NotFound();
 
-                car.Name = viewModel.EditCars.Name;
-                car.Sold = viewModel.EditCars.Sold;
-                car.Desc = viewModel.EditCars.Desc;
-                car.Engine = viewModel.EditCars.Engine;
-                car.Distance = viewModel.EditCars.Distance;
-                car.Color = viewModel.EditCars.Color;
-                car.Vin = viewModel.EditCars.Vin;
-                car.PriceNetto = viewModel.EditCars.PriceNetto;
-                car.PriceBrutto = (0.2 * viewModel.EditCars.PriceNetto) + viewModel.EditCars.PriceNetto;
-                car.Profit = (0.18 * (0.2 * viewModel.EditCars.PriceNetto)) + (0.2 * viewModel.EditCars.PriceNetto);
+                car.Name = viewModel.Name;
+                car.Sold = viewModel.Sold;
+                car.Desc = viewModel.Desc;
+                car.Year = viewModel.Year;
+                car.Engine = viewModel.Engine;
+                car.Distance = viewModel.Distance;
+                car.Color = viewModel.Color;
+                car.Vin = viewModel.Vin;
+                car.PriceNetto = viewModel.PriceNetto;
+                car.PriceBrutto = (0.2 * viewModel.PriceNetto) + viewModel.PriceNetto;
+                car.Profit = (0.18 * (0.2 * viewModel.PriceNetto)) + (0.2 * viewModel.PriceNetto);
                 car.DateEdit = DateTime.Now.ToShortDateString();
                 car.AddByName = user.Name;
                 car.AddBySurname = user.SurName;
@@ -278,42 +286,6 @@ namespace CarDIler.Controllers
             _db.SaveChanges();
 
             return RedirectToAction("Index", "Post");
-        }
-
-        //About
-        [HttpGet]
-        public ActionResult EditAbout(int id)
-        {
-            About about = _db.Abouts.
-                AsNoTracking().
-                Where(x => x.Id == id).
-                SingleOrDefault();
-            EditAboutViewModel eavw = new EditAboutViewModel { Abouts = about };
-
-            return View(eavw);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> EditAbout(EditAboutViewModel eavw)
-        {
-            if (ModelState.IsValid)
-            {
-                About about = await _db.Abouts.
-                    Where(x => x.Id == eavw.Abouts.Id).
-                    FirstOrDefaultAsync();
-                if (about == null)
-                    return NotFound();
-
-                about.Info_1 = eavw.Abouts.Info_1;
-                about.Info_2 = eavw.Abouts.Info_2;
-                about.Info_3 = eavw.Abouts.Info_3;
-                about.Info_4 = eavw.Abouts.Info_4;
-
-                await _db.SaveChangesAsync();
-
-                return RedirectToAction("Index", "About");
-            }
-            return View(eavw);
         }
 
         //секція користувачів

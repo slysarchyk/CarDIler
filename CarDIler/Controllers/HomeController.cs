@@ -14,69 +14,37 @@ namespace CarDIler.Controllers
     public class HomeController : Controller
     {
         private readonly SqlContext _db;
-        IWebHostEnvironment _appEnvironment;
 
-        public HomeController(SqlContext context, IWebHostEnvironment appEnvironment)
-        {
-            _db = context;
-            _appEnvironment = appEnvironment;
-        }
+        public HomeController(SqlContext context) {_db = context;}
 
-        public IActionResult Index(int? brand, int? category, int? fuel, int? year, int page = 1)
+        public IActionResult Index(int? brand, int page = 1)
         {
             int pageSize = 3;
 
-            IQueryable<Car> car = _db.Cars.
-                Include(b => b.Brand).
-                Include(c => c.Category).
-                Include(f => f.Fuel).
-                Include(y => y.Year);
+            IQueryable<Car> queryable = _db.Cars.
+                Include(b => b.Brand);
 
             if (brand != null && brand != 0)
             {
-                car = car.Where(b => b.BrandId == brand);
-            }
-            if (category != null && category != 0)
-            {
-                car = car.Where(c => c.CatId == category);
-            }
-            if (fuel != null && fuel != 0)
-            {
-                car = car.Where(f => f.FuelId == fuel);
-            }
-            if (year != null && year != 0)
-            {
-                car = car.Where(y => y.YearId == year);
+                queryable = queryable.Where(b => b.BrandId == brand);
             }
 
             List<Brand> brands = _db.Brands.ToList();
             brands.Insert(0, new Brand { BrandName = "All", Id = 0 });
 
-            List<Category> cats = _db.Categories.ToList();
-            cats.Insert(0, new Category { CatName = "All", Id = 0 });
-
-            List<Fuel> fuels = _db.Fuels.ToList();
-            fuels.Insert(0, new Fuel { FuelName = "All", Id = 0 });
-
-            List<Year> years = _db.Years.ToList();
-            years.Insert(0, new Year { YearName = "All", Id = 0 });
-
-            var count = car.Count();
+            var count = queryable.Count();
 
             PageViewModel pvw = new PageViewModel(count, page, pageSize);
 
             HomeViewModel hvw = new HomeViewModel
             {
-                Cars = car.Where(s => s.Sold == false).
+                Cars = queryable.Where(s => s.Sold == false).
                     OrderByDescending(x => x.Id).
                     Skip((page - 1) * pageSize).
                     Take(pageSize).
                     ToList(),
                 PageViewModels = pvw,
                 Brands = new SelectList(brands, "Id", "BrandName"),
-                Categories = new SelectList(cats, "Id", "CatName"),
-                Fuels = new SelectList(fuels, "Id", "FuelName"),
-                Years = new SelectList(years, "Id", "YearName"),
                 LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).FirstOrDefault(),
                 AvalibleCar = _db.Cars.AsTracking().Count(x => x.Sold == false)
             };
@@ -90,9 +58,6 @@ namespace CarDIler.Controllers
                 var detalcar = await _db.Cars.
                     Where(s => s.Sold == false).
                     Include(b => b.Brand).
-                    Include(c => c.Category).
-                    Include(f => f.Fuel).
-                    Include(y => y.Year).
                     AsNoTracking().
                     FirstOrDefaultAsync(c => c.Id == id);
 
@@ -102,7 +67,7 @@ namespace CarDIler.Controllers
                 DetalCarViewModel dcvw = new DetalCarViewModel
                 {
                     DetalCars = detalcar,
-                    Galerys = _db.Galeries.Where(x => x.CarId == id).AsNoTracking()
+                    CarImages = _db.CarImages.Where(x => x.CarId == id).AsNoTracking()
                 };
 
                 return View(dcvw);

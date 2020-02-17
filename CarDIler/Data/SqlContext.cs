@@ -1,5 +1,4 @@
-﻿using CarDIler.Data.Models.About;
-using CarDIler.Data.Models.Car;
+﻿using CarDIler.Data.Models.Car;
 using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,17 +10,10 @@ namespace CarDIler.Models
     {
         public DbSet<Car> Cars { get; set; }
         public DbSet<Brand> Brands { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Fuel> Fuels { get; set; }
-        public DbSet<Year> Years { get; set; }
-        public DbSet<Galery> Galeries { get; set; }
-        public DbSet<Post> Posts { get; set; } 
-        public DbSet<About> Abouts { get; set; }
+        public DbSet<CarImages> CarImages { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
-        public SqlContext(DbContextOptions<SqlContext> options) : base(options)
-        {
-            Database.EnsureCreated();
-        }
+        public SqlContext(DbContextOptions<SqlContext> options) : base(options) { }
         public SqlContext() { }
     }
 }

@@ -1,4 +1,5 @@
-﻿@using Microsoft.EntityFrameworkCore
+﻿@using CarDIler.Data.Models.Car
+@using Microsoft.EntityFrameworkCore
 @model CarDIler.ViewModel.AddCarViewModel
 @inject SqlContext SqlContext
 @{
@@ -7,15 +8,8 @@
     var brands = await SqlContext.Brands.ToListAsync();
     var brandsSelectList = brands.Select(b => new SelectListItem(b.BrandName, b.Id.ToString()));
 
-    var cats = await SqlContext.Categories.ToListAsync();
-    var catsSelectList = cats.Select(c => new SelectListItem(c.CatName, c.Id.ToString()));
-
-    var fuels = await SqlContext.Fuels.ToListAsync();
-    var fuelsSelectList = fuels.Select(f => new SelectListItem(f.FuelName, f.Id.ToString()));
-
-    var years = await SqlContext.Years.ToListAsync();
-    var yearsSelectList = years.Select(y => new SelectListItem(y.YearName, y.Id.ToString()));
-
+    var categorysSelectList = Html.GetEnumSelectList<Category>();
+    var fuelSelectList = Html.GetEnumSelectList<Fuel>();
 }
 
 
@@ -40,64 +34,67 @@
                     <div class="form-group row">
                         <div class="col-md-6">
                             <label asp-for="Name" class="control-label">Name of the car</label>
-                            <input asp-for="Name" type="text" class="form-control" required>
+                            <input asp-for="Name" type="text" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="YearId" class="control-label">Year</label>
-                            <select type="text" class="form-control" asp-for="YearId" asp-items="@yearsSelectList" required>
-                                <option></option>
-                            </select>
+                            <label asp-for="Year" class="control-label">Year (1900 - 2100)</label>
+                            <input asp-for="Year" type="number" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label asp-for="Engine" class="control-label">Engine</label>
-                            <input asp-for="Engine" type="text" class="form-control" required>
+                            <input asp-for="Engine" type="text" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label asp-for="Distance" class="control-label">Distance</label>
-                            <input asp-for="Distance" type="number" class="form-control" required>
+                            <input asp-for="Distance" type="number" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label asp-for="PriceNetto" class="control-label">Price Netto</label>
-                            <input asp-for="PriceNetto" type="text" class="form-control" required>
+                            <input asp-for="PriceNetto" type="text" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label asp-for="BrandId" class="control-label">Brand</label>
-                            <select type="text" class="form-control" asp-for="BrandId" asp-items="@brandsSelectList" required>
+                            <select type="text" class="form-control" asp-for="BrandId" asp-items="@brandsSelectList">
                                 <option></option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="CatId" class="control-label">Category</label>
-                            <select type="text" class="form-control" asp-for="CatId" asp-items="@catsSelectList" required>
+                            <label asp-for="Category" class="control-label">Category</label>
+                            <select class="form-control" asp-for="Category" asp-items="@categorysSelectList">
                                 <option></option>
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="FuelId" class="control-label">Fuel</label>
-                            <select type="text" class="form-control" asp-for="FuelId" asp-items="@fuelsSelectList" required>
+                            <label asp-for="Fuel" class="control-label">Fuel</label>
+                            <select type="text" class="form-control" asp-for="Fuel" asp-items="@fuelSelectList">
                                 <option></option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label asp-for="Vin" class="control-label">Vin code</label>
-                            <input asp-for="Vin" type="text" class="form-control" required>
+                            <input asp-for="Vin" type="text" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label asp-for="Color" class="control-label">Color</label>
-                            <input asp-for="Color" type="text" class="form-control" required>
+                            <input asp-for="Color" type="text" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label class="control-label">Cover photo</label>
-                            <input type="file" name="cover" required/>
+                            <input type="file" name="cover" required />
                         </div>
                         <div class="col-md-6">
                             <label class="control-label">Galery</label>
-                            <input type="file" name="uploads" multiple/>
+                            <input type="file" name="uploads" multiple required />
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
-                            <textarea asp-for="Desc" type="date" class="form-control" placeholder="Detal description of the car" cols="30" rows="10" required></textarea>
+                            <textarea asp-for="Desc"
+                                      type="date"
+                                      class="form-control"
+                                      placeholder="Detal description of the car"
+                                      cols="30" rows="10"> 
+                            </textarea>
                         </div>
                     </div>
                     <div class="form-group row">

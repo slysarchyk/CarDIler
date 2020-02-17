@@ -45,7 +45,7 @@
                     <hr />
                 }
                 <p><span class="lead">Brand</span> @Model.DetalCars.Brand.BrandName</p>
-                <p><span class="lead">Year</span> @Model.DetalCars.Year.YearName</p>
+                <p><span class="lead">Year</span> @Model.DetalCars.Year</p>
                 <p><span class="lead">Price</span> @Model.DetalCars.PriceBrutto $</p>
                 <p><span class="lead">Engine</span> @Model.DetalCars.Engine</p>
                 <p><span class="lead">Color</span> @Model.DetalCars.Color</p>
@@ -56,7 +56,7 @@
                 <div class="container">
                     <div class="row">
 
-                        @foreach (var photo in Model.Galerys)
+                        @foreach (var photo in Model.CarImages)
                         {
                             <div class="col-lg-3 col-md-4 col-xs-6 thumb">
                                 <a data-fancybox="gallery" href="@Url.Content(photo.Path)">

@@ -8,9 +8,6 @@ namespace CarDIler.ViewModel
     {
         public IEnumerable<Car> Cars { get; set; }
         public SelectList Brands { get; set; }
-        public SelectList Categories { get; set; }
-        public SelectList Fuels { get; set; }
-        public SelectList Years { get; set; }
         public PageViewModel PageViewModels { get; set; }
         public Car LastCar { get; set; }
         public int AvalibleCar { get; set; }

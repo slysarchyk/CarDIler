@@ -11,23 +11,12 @@ namespace CarDIler.Controllers
     public class AboutController : Controller
     {
         UserManager<User> _userManager;
-        private readonly SqlContext _db;
-        public AboutController(UserManager<User> userManager, SqlContext context)
+        public AboutController(UserManager<User> userManager)
         {
             _userManager = userManager;
-            _db = context;
         }
 
         [HttpGet]
-        public IActionResult Index()
-        {
-            AboutViewModel avw = new AboutViewModel
-            {
-                Users = _userManager.Users.AsNoTracking().ToList(),
-                Abouts = _db.Abouts.AsNoTracking().FirstOrDefault()
-            }; 
-                 
-            return View(avw);
-        }
+        public IActionResult Index() => View();
     }
 }

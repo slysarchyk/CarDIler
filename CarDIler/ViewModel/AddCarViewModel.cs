@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CarDIler.Data.Models.Car;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarDIler.ViewModel
@@ -12,9 +13,9 @@ namespace CarDIler.ViewModel
         public string Desc { get; set; }
 
         public int BrandId { get; set; }
-        public int YearId { get; set; }
-        public int CatId { get; set; }
-        public int FuelId { get; set; }
+        public Category Category { get; set; }
+        public int Year { get; set; }
+        public string Fuel { get; set; }
 
         public double Engine { get; set; }
         public int Distance { get; set; }

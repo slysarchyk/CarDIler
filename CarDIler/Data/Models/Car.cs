@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace CarDIler.Data.Models.Car
 {
@@ -19,15 +18,12 @@ namespace CarDIler.Data.Models.Car
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
 
-        public int YearId { get; set; }
-        public Year Year { get; set; }
-
-        public int CatId { get; set; }
         public Category Category { get; set; }
-
-        public int FuelId { get; set; }
+        
+        [Range(1900, 2100)]
+        public int Year { get; set; }
         public Fuel Fuel { get; set; }
-
+        
         [Required]
         public double Engine { get; set; }
 
@@ -38,18 +34,22 @@ namespace CarDIler.Data.Models.Car
         public string Color { get; set; }
         [Required]
         public string Vin { get; set; }
+        
         [Required]
         [Range(0, double.MaxValue)]
         public double PriceNetto { get; set; }
+        
         [Required]
         [Range(0, double.MaxValue)]
         public double PriceBrutto { get; set; }
+        
         [Required]
         [Range(0, double.MaxValue)]
         public double Profit { get; set; }
 
         [Required]
         public string Desc { get; set; }
+        
         public string Date { get; set; }
         public string DateEdit { get; set; }
 
@@ -61,13 +61,13 @@ namespace CarDIler.Data.Models.Car
 
         public string CoverPath { get; set; }
 
-        public virtual ICollection<Galery> Galeries { get; set; }
+        public virtual ICollection<CarImages> CarImages { get; set; }
         public Car()
         {
-            Galeries = new List<Galery>();
+            CarImages = new List<CarImages>();
         }
     }
-    public class Galery
+    public class CarImages
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -92,43 +92,28 @@ namespace CarDIler.Data.Models.Car
             Cars = new List<Car>();
         }
     }
-    public class Category
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string CatName { get; set; }
-        public virtual ICollection<Car> Cars { get; set; }
-        public Category()
-        {
-            Cars = new List<Car>();
-        }
-    }
-    public class Fuel
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string FuelName { get; set; }
-        public virtual ICollection<Car> Cars { get; set; }
-        public Fuel()
-        {
-            Cars = new List<Car>();
-        }
-    }
 
-    public class Year
+    public enum Category
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string YearName { get; set; }
-        public virtual ICollection<Car> Cars { get; set; }
-
-        public Year()
-        {
-            Cars = new List<Car>();
-        }
+        Cabriolet = 1,
+        City = 2,
+        Coupe = 3,
+        Luxury = 4,
+        Minibus = 5,
+        Sedan = 6,
+        SUV = 7,
+        Combi = 8,
+        Van = 9,
+        Hatchback = 10,
+        Classic = 11,
+        Campervan = 12
     }
-
+    
+    public enum Fuel
+    {
+        Gas = 1,
+        Diesel = 2,
+        Electric = 3,
+        Hybrid = 4
+    }
 }
