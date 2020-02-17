@@ -1,9 +1,9 @@
-﻿using CarDIler.Data.Models.Post;
+﻿using CarDIler.Data.Models;
 
 namespace CarDIler.ViewModel
 {
     public class EditPostViewModel
     {
-        public Post EditPosts { get; set; }
+        public BlogPost EditPosts { get; set; }
     }
 }

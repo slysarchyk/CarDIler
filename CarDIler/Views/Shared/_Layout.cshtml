@@ -81,7 +81,7 @@
                         <nav class="site-navigation text-right ml-auto d-none d-lg-block" role="navigation">
                             <ul class="site-menu main-menu js-clone-nav ml-auto">
                                 <li><a asp-action="index" asp-controller="home" class="nav-link">Home</a></li>
-                                <Li><a asp-action="Index" asp-controller="post" class="nav-link">Blog</a></Li>
+                                <Li><a asp-action="Index" asp-controller="blogpost" class="nav-link">Blog</a></Li>
                                 <li><a asp-action="index" asp-controller="About" class="nav-link">About</a></li>
                                 @if (ViewContext.HttpContext.User.IsInRole("Admin"))
                                 {
@@ -131,7 +131,7 @@
                         <div class="col-lg-3">
                             <h2 class="footer-heading mb-4">Links</h2>
                             <ul class="list-unstyled">
-                                <li><a asp-action="index" asp-controller="blog">Blog</a></li>
+                                <li><a asp-action="index" asp-controller="blogpost">Blog</a></li>
                                 <li><a asp-action="index" asp-controller="About">About</a></li>
                             </ul>
                         </div>

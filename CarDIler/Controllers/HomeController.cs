@@ -64,7 +64,7 @@ namespace CarDIler.Controllers
                 if (detalcar == null)
                     return NotFound();
 
-                DetalCarViewModel dcvw = new DetalCarViewModel
+                FullCarInfoViewModel dcvw = new FullCarInfoViewModel
                 {
                     DetalCars = detalcar,
                     CarImages = _db.CarImages.Where(x => x.CarId == id).AsNoTracking()

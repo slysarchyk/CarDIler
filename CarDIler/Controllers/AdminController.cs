@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CarDIler.Data.Models;
 using CarDIler.Data.Models.Car;
-using CarDIler.Data.Models.Post;
 using CarDIler.Data.Models.User;
 using CarDIler.Models;
 using CarDIler.ViewModel;
@@ -73,7 +73,7 @@ namespace CarDIler.Controllers
         public IActionResult AddCar() => View();
 
         [HttpPost]
-        public async Task<IActionResult> AddCar(Car car, CarImages galery, IFormFile cover, IFormFileCollection uploads)
+        public async Task<IActionResult> AddCar(Car car, IFormFile cover, IFormFileCollection uploads)
         {
             if (ModelState.IsValid)
             {
@@ -210,17 +210,17 @@ namespace CarDIler.Controllers
         public ActionResult AddPost() => View();
 
         [HttpPost]
-        public async Task<ActionResult> AddPost(Post post, IFormFile cover)
+        public async Task<ActionResult> AddPost(BlogPost post, IFormFile cover)
         {
             if (ModelState.IsValid)
             {
-                string coverPath = "/images/Posts/" + cover.FileName;
+                string coverPath = "/images/BlogPosts/" + cover.FileName;
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
                 {
                     await cover.CopyToAsync(fileStream);
                 }
 
-                Post posts = new Post
+                BlogPost posts = new BlogPost
                 {
                     Name = post.Name,
                     ShortDesc = post.ShortDesc,
@@ -230,7 +230,7 @@ namespace CarDIler.Controllers
                     CoverPath = coverPath
                 };
 
-                _db.Posts.Add(posts);
+                _db.BlogPosts.Add(posts);
                 _db.SaveChanges();
 
                 return RedirectToAction("Index", "Post");
@@ -241,7 +241,7 @@ namespace CarDIler.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPost(int? id)
         {
-            Post post = await _db.Posts.
+            BlogPost post = await _db.BlogPosts.
                 AsNoTracking().
                 Where(x => x.Id == id).
                 SingleOrDefaultAsync();
@@ -259,7 +259,7 @@ namespace CarDIler.Controllers
         {
             if (ModelState.IsValid)
             {
-                Post post = await _db.Posts.
+                BlogPost post = await _db.BlogPosts.
                     Where(x => x.Id == viewModel.EditPosts.Id).
                     FirstOrDefaultAsync();
                 if (post == null)
@@ -281,7 +281,7 @@ namespace CarDIler.Controllers
         [HttpGet]
         public ActionResult DelPost(int id)
         {
-            Post post = new Post { Id = id };
+            BlogPost post = new BlogPost { Id = id };
             _db.Entry(post).State = EntityState.Deleted;
             _db.SaveChanges();
 

@@ -1,4 +1,4 @@
-﻿@model CarDIler.ViewModel.AddPostVIewModel
+﻿@model CarDIler.ViewModel.AddPostViewModel
 @{
     ViewData["Title"] = "AddPost";
 }
@@ -25,7 +25,7 @@
         </div>
         <div class="row">
             <div class="col-lg-8 mb-5">
-                <form asp-action="AddPost" asp-controller="admin" method="post">
+                <form asp-action="AddPost" asp-controller="admin" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
                         <div class="col-md-6 mb-4 mb-lg-0">
                             <input asp-for="Name" type="text" class="form-control" placeholder="Name">

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CarDIler.Data.Models.Post
+namespace CarDIler.Data.Models
 {
-    public class Post
+    public class BlogPost
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -11,10 +11,10 @@ namespace CarDIler.Data.Models.Post
 
         [Required]
         public string Name { get; set; }
-        
+
         [Required]
         public string ShortDesc { get; set; }
-        
+
         [Required]
         public string Desc { get; set; }
 

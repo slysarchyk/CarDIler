@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CarDIler.ViewModel
 {
-    public class DetalCarViewModel
+    public class FullCarInfoViewModel
     {
         public Car DetalCars { get; set; }
         public IEnumerable<CarImages> CarImages { get; set; }
