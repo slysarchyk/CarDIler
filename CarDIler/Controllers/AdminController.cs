@@ -78,8 +78,8 @@ namespace CarDIler.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCar(AddCarViewModel car, IFormFile cover, IFormFileCollection uploads)
         {
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 string coverPath = "/images/Cars/" + cover.FileName;
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
                 {
@@ -112,8 +112,8 @@ namespace CarDIler.Controllers
                 }
 
                 return RedirectToAction("Index", "Home");
-            //}
-            //return View();
+            }
+            return View();
         }
 
         [HttpGet]
