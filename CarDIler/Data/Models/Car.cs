@@ -55,10 +55,7 @@ namespace CarDIler.Data.Models.Car
         
         public string Date { get; set; }
         public string DateEdit { get; set; }
-        public string AddByName { get; set; }
-        public string AddBySurname { get; set; }
-        public string AddByPhoneNumber { get; set; }
-        public string AddByPosition { get; set; }
+        public string AddedBy { get; set; }
         public string CoverPath { get; set; }
 
         public virtual ICollection<CarImages> CarImages { get; set; }

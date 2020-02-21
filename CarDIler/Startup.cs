@@ -1,4 +1,6 @@
-﻿using CarDIler.Data.Models.User;
+﻿using AutoMapper;
+using CarDIler.Data.Models.User;
+using CarDIler.Infrastructure.MapperProfiles;
 using CarDIler.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,12 +26,20 @@ namespace CarDIler
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("Hetzner");
-
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(connection));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<SqlContext>();
+
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new BlogPostProfiles());
+                mc.AddProfile(new CarProfiles());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddMvc();

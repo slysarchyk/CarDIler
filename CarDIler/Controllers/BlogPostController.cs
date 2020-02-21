@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using CarDIler.Data.Models;
-using CarDIler.Data.Models.Car;
-using CarDIler.Data.Models.User;
 using CarDIler.Models;
 using CarDIler.ViewModel;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +16,7 @@ namespace CarDIler.Controllers
         }
         public IActionResult Index(int page = 1)
         {
-            int pageSize = 3;
+            int pageSize = 6;
 
             var allpost = _db.BlogPosts;
 

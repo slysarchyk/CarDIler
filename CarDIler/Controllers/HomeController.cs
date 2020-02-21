@@ -8,6 +8,7 @@ using CarDIler.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using System;
 
 namespace CarDIler.Controllers
 {
@@ -19,7 +20,7 @@ namespace CarDIler.Controllers
 
         public IActionResult Index(int? brand, int page = 1)
         {
-            int pageSize = 3;
+            int pageSize = 6;
 
             IQueryable<Car> queryable = _db.Cars.
                 Include(b => b.Brand);
@@ -51,7 +52,7 @@ namespace CarDIler.Controllers
 
             return View(hvw);
         }
-        public async Task<IActionResult> DetalCar(int? id)
+        public async Task<IActionResult> FullCarInfo(int? id)
         {
             if (id != null)
             {

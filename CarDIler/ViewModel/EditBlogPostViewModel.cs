@@ -1,16 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using CarDIler.Data.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace CarDIler.ViewModel
 {
-    public class AddPostViewModel
+    public class EditBlogPostViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string ShortDesc { get; set; }
         public string Desc { get; set; }
+        public string Date { get; set; }
+        public string DateEdit { get; set; }
+        public string AddedBy { get; set; }
+
         public string CoverPath { get; set; }
     }
 }

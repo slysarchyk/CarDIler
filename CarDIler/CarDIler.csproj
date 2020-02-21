@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
     <Folder Include="wwwroot\images\Cars\" />
     <Folder Include="wwwroot\images\BlogPosts\" />
   </ItemGroup>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CarDIler.Data.Models;
 using CarDIler.Data.Models.Car;
 using CarDIler.Data.Models.User;
@@ -21,19 +22,21 @@ namespace CarDIler.Controllers
     public class AdminController : Controller
     {
         private readonly SqlContext _db;
-        IWebHostEnvironment _appEnvironment;
-        UserManager<User> _userManager;
-        RoleManager<IdentityRole> _roleManager;
-
+        private readonly IWebHostEnvironment _appEnvironment;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IMapper _mapper;
         public AdminController(SqlContext context, 
             IWebHostEnvironment appEnvironment, 
             UserManager<User> userManager, 
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IMapper mapper)
         {
             _db = context;
             _appEnvironment = appEnvironment;
             _userManager = userManager;
             _roleManager = roleManager;
+            _mapper = mapper;
         }
 
         public IActionResult Index(int page = 1)
@@ -73,42 +76,25 @@ namespace CarDIler.Controllers
         public IActionResult AddCar() => View();
 
         [HttpPost]
-        public async Task<IActionResult> AddCar(Car car, IFormFile cover, IFormFileCollection uploads)
+        public async Task<IActionResult> AddCar(AddCarViewModel car, IFormFile cover, IFormFileCollection uploads)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 string coverPath = "/images/Cars/" + cover.FileName;
                 using (var fileStream = new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
                 {
                     await cover.CopyToAsync(fileStream);
                 }
+                
+                var mapCar = _mapper.Map<AddCarViewModel, Car>(car);
 
-                var user = await _userManager.GetUserAsync(User);
+                mapCar.PriceBrutto = (0.2 * car.PriceNetto) + car.PriceNetto;
+                mapCar.Profit = (0.18 * (0.2 * car.PriceNetto)) + (0.2 * car.PriceNetto);
+                mapCar.Date = DateTime.Now.ToShortDateString();
+                mapCar.CoverPath = coverPath;
+                mapCar.AddedBy = _userManager.GetUserAsync(User).Result.UserName;
 
-                Car cars = new Car
-                {
-                    Name = car.Name,
-                    Sold = car.Sold,
-                    Engine = car.Engine,
-                    Distance = car.Distance,
-                    PriceNetto = car.PriceNetto,
-                    PriceBrutto = (0.2 * car.PriceNetto) + car.PriceNetto,
-                    Profit = (0.18 * (0.2 * car.PriceNetto)) + (0.2 * car.PriceNetto),
-                    BrandId = car.BrandId,
-                    Category = car.Category,
-                    Year = car.Year,
-                    Fuel = car.Fuel,
-                    Vin = car.Vin,
-                    Color = car.Color,
-                    Desc = car.Desc,
-                    Date = DateTime.Now.ToShortDateString(),
-                    CoverPath = coverPath,
-                    AddByName = user.Name,
-                    AddBySurname = user.SurName,
-                    AddByPosition = user.Position,
-                    AddByPhoneNumber = user.PhoneNumber
-                };
-                _db.Cars.Add(cars);
+                _db.Cars.Add(mapCar);
                 _db.SaveChanges();
 
                 foreach (var uploadedFile in uploads)
@@ -119,15 +105,15 @@ namespace CarDIler.Controllers
                         await uploadedFile.CopyToAsync(fileStream);
                     }
 
-                    CarImages galerys = new CarImages { Path = path, CarId = cars.Id };
+                    CarImages galerys = new CarImages { Path = path, CarId = mapCar.Id };
 
                     _db.CarImages.Add(galerys);
                     _db.SaveChanges();
                 }
 
                 return RedirectToAction("Index", "Home");
-            }
-            return View();
+            //}
+            //return View();
         }
 
         [HttpGet]
@@ -182,10 +168,7 @@ namespace CarDIler.Controllers
                 car.PriceBrutto = (0.2 * viewModel.PriceNetto) + viewModel.PriceNetto;
                 car.Profit = (0.18 * (0.2 * viewModel.PriceNetto)) + (0.2 * viewModel.PriceNetto);
                 car.DateEdit = DateTime.Now.ToShortDateString();
-                car.AddByName = user.Name;
-                car.AddBySurname = user.SurName;
-                car.AddByPosition = user.Position;
-                car.AddByPhoneNumber = user.PhoneNumber;
+                car.AddedBy = user.UserName;
 
                 await _db.SaveChangesAsync();
 
@@ -205,35 +188,33 @@ namespace CarDIler.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+
         //секція блогу
         [HttpGet]
         public ActionResult AddPost() => View();
 
         [HttpPost]
-        public async Task<ActionResult> AddPost(BlogPost post, IFormFile cover)
+        public async Task<ActionResult> AddPost(AddBlogPostViewModel post, IFormFile cover)
         {
             if (ModelState.IsValid)
             {
                 string coverPath = "/images/BlogPosts/" + cover.FileName;
-                using (var fileStream = new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
+                using (var fileStream = 
+                    new FileStream(_appEnvironment.WebRootPath + coverPath, FileMode.Create))
                 {
                     await cover.CopyToAsync(fileStream);
                 }
 
-                BlogPost posts = new BlogPost
-                {
-                    Name = post.Name,
-                    ShortDesc = post.ShortDesc,
-                    Desc = post.Desc,
-                    Date = DateTime.Now.ToShortDateString(),
-                    AddedBy = _userManager.GetUserAsync(User).Result.UserName,
-                    CoverPath = coverPath
-                };
+                var mappost = _mapper.Map<AddBlogPostViewModel, BlogPost>(post);
 
-                _db.BlogPosts.Add(posts);
+                mappost.Date = DateTime.Now.ToShortDateString();
+                mappost.AddedBy = _userManager.GetUserAsync(User).Result.UserName;
+                mappost.CoverPath = coverPath;
+
+                _db.BlogPosts.Add(mappost);
                 _db.SaveChanges();
 
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "BlogPost");
             }
             return View();
         }
@@ -241,6 +222,7 @@ namespace CarDIler.Controllers
         [HttpGet]
         public async Task<IActionResult> EditPost(int? id)
         {
+
             BlogPost post = await _db.BlogPosts.
                 AsNoTracking().
                 Where(x => x.Id == id).
@@ -249,30 +231,38 @@ namespace CarDIler.Controllers
             if (post == null)
                 return NotFound();
 
-            var viewModel = new EditPostViewModel { EditPosts = post };
+            var viewModel = new EditBlogPostViewModel
+            {
+                Id = post.Id,
+                Name = post.Name,
+                ShortDesc = post.ShortDesc,
+                Desc = post.Desc,
+                DateEdit = post.DateEdit,
+                CoverPath = post.CoverPath
+            };
 
-            return View(viewModel);
+            return View(viewModel) ;
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPost(EditPostViewModel viewModel)
+        public async Task<IActionResult> EditPost(EditBlogPostViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 BlogPost post = await _db.BlogPosts.
-                    Where(x => x.Id == viewModel.EditPosts.Id).
+                    Where(x => x.Id == viewModel.Id).
                     FirstOrDefaultAsync();
                 if (post == null)
                     return NotFound();
 
-                post.Name = viewModel.EditPosts.Name;
-                post.ShortDesc = viewModel.EditPosts.ShortDesc;
-                post.Desc = viewModel.EditPosts.Desc;
+                post.Name = viewModel.Name;
+                post.ShortDesc = viewModel.ShortDesc;
+                post.Desc = viewModel.Desc;
                 post.DateEdit = DateTime.Now.ToShortDateString();
 
                 await _db.SaveChangesAsync();
 
-                return RedirectToAction("Index", "Post");
+                return RedirectToAction("Index", "BlogPost");
             }
 
             return View(viewModel);
@@ -285,7 +275,7 @@ namespace CarDIler.Controllers
             _db.Entry(post).State = EntityState.Deleted;
             _db.SaveChanges();
 
-            return RedirectToAction("Index", "Post");
+            return RedirectToAction("Index", "BlogPost");
         }
 
         //секція користувачів
