@@ -1,7 +1,4 @@
-﻿using CarDIler.Data.Models;
-using System.ComponentModel.DataAnnotations;
-
-namespace CarDIler.ViewModel
+﻿namespace CarDIler.ViewModel
 {
     public class EditBlogPostViewModel
     {

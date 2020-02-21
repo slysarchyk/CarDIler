@@ -125,30 +125,18 @@ namespace CarDIler.Controllers
             if (car == null)
                 return NotFound();
 
-            var viewModel = new EditCarViewModel 
-            {
-                Name = car.Name,
-                Sold = car.Sold,
-                Desc = car.Desc,
-                Engine = car.Engine,
-                Distance = car.Distance,
-                Color = car.Color,
-                Vin = car.Vin,
-                PriceNetto = car.PriceNetto,
-                CoverPath = car.CoverPath,
-                Year = car.Year
-            };
+            var mapCar = _mapper.Map<Car, EditCarViewModel>(car);
 
-            return View(viewModel);
+            return View(mapCar);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditCar(EditCarViewModel viewModel)
+        public async Task<IActionResult> EditCar(EditCarViewModel mapCar)
         {
             if (ModelState.IsValid)
             {
                 Car car = await _db.Cars.
-                    Where(x => x.Id == viewModel.Id).
+                    Where(x => x.Id == mapCar.Id).
                     FirstOrDefaultAsync();
 
                 var user = await _userManager.GetUserAsync(User);
@@ -156,17 +144,18 @@ namespace CarDIler.Controllers
                 if (car == null)
                     return NotFound();
 
-                car.Name = viewModel.Name;
-                car.Sold = viewModel.Sold;
-                car.Desc = viewModel.Desc;
-                car.Year = viewModel.Year;
-                car.Engine = viewModel.Engine;
-                car.Distance = viewModel.Distance;
-                car.Color = viewModel.Color;
-                car.Vin = viewModel.Vin;
-                car.PriceNetto = viewModel.PriceNetto;
-                car.PriceBrutto = (0.2 * viewModel.PriceNetto) + viewModel.PriceNetto;
-                car.Profit = (0.18 * (0.2 * viewModel.PriceNetto)) + (0.2 * viewModel.PriceNetto);
+                car.Name = mapCar.Name;
+                car.Sold = mapCar.Sold;
+                car.Desc = mapCar.Desc;
+                car.Year = mapCar.Year;
+                car.Engine = mapCar.Engine;
+                car.Distance = mapCar.Distance;
+                car.Color = mapCar.Color;
+                car.Vin = mapCar.Vin;
+                car.PriceNetto = mapCar.PriceNetto;
+                car.PriceNetto = mapCar.PriceNetto;
+                car.PriceBrutto = (0.2 * mapCar.PriceNetto) + mapCar.PriceNetto;
+                car.Profit = (0.18 * (0.2 * mapCar.PriceNetto)) + (0.2 * mapCar.PriceNetto);
                 car.DateEdit = DateTime.Now.ToShortDateString();
                 car.AddedBy = user.UserName;
 
@@ -175,7 +164,7 @@ namespace CarDIler.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(viewModel);
+            return View(mapCar);
         }
 
         [HttpGet]
@@ -220,7 +209,7 @@ namespace CarDIler.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditPost(int? id)
+        public async Task<IActionResult> EditBlogPost(int? id)
         {
 
             BlogPost post = await _db.BlogPosts.
@@ -231,33 +220,25 @@ namespace CarDIler.Controllers
             if (post == null)
                 return NotFound();
 
-            var viewModel = new EditBlogPostViewModel
-            {
-                Id = post.Id,
-                Name = post.Name,
-                ShortDesc = post.ShortDesc,
-                Desc = post.Desc,
-                DateEdit = post.DateEdit,
-                CoverPath = post.CoverPath
-            };
+            var mapBlogPost = _mapper.Map<BlogPost, EditBlogPostViewModel>(post);
 
-            return View(viewModel) ;
+            return View(mapBlogPost);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditPost(EditBlogPostViewModel viewModel)
+        public async Task<IActionResult> EditBlogPost(EditBlogPostViewModel mapBlogPost)
         {
             if (ModelState.IsValid)
             {
                 BlogPost post = await _db.BlogPosts.
-                    Where(x => x.Id == viewModel.Id).
+                    Where(x => x.Id == mapBlogPost.Id).
                     FirstOrDefaultAsync();
                 if (post == null)
                     return NotFound();
 
-                post.Name = viewModel.Name;
-                post.ShortDesc = viewModel.ShortDesc;
-                post.Desc = viewModel.Desc;
+                post.Name = mapBlogPost.Name;
+                post.ShortDesc = mapBlogPost.ShortDesc;
+                post.Desc = mapBlogPost.Desc;
                 post.DateEdit = DateTime.Now.ToShortDateString();
 
                 await _db.SaveChangesAsync();
@@ -265,7 +246,7 @@ namespace CarDIler.Controllers
                 return RedirectToAction("Index", "BlogPost");
             }
 
-            return View(viewModel);
+            return View(mapBlogPost);
         }
 
         [HttpGet]

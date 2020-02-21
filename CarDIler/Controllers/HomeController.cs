@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using CarDIler.ViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
-using System;
 
 namespace CarDIler.Controllers
 {

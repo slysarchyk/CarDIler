@@ -36,6 +36,7 @@ namespace CarDIler
             {
                 mc.AddProfile(new BlogPostProfiles());
                 mc.AddProfile(new CarProfiles());
+                mc.AddProfile(new EditCarProfiles());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();

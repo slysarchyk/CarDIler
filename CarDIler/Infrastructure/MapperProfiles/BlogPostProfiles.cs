@@ -13,6 +13,8 @@ namespace CarDIler.Infrastructure.MapperProfiles
                 .ForMember(x => x.AddedBy, otp => otp.Ignore())
                 .ForMember(x => x.Date, otp => otp.Ignore())
                 .ForMember(x => x.CoverPath, otp => otp.Ignore());
+
+            CreateMap<BlogPost, EditBlogPostViewModel>();
         }
     }
 }
