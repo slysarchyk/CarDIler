@@ -75,7 +75,6 @@ namespace CarDIler.Data.Models.Car
         public Car Cars { get; set; }
     }
 
-
     public class Brand
     {
         [Key]
@@ -83,12 +82,25 @@ namespace CarDIler.Data.Models.Car
         public int Id { get; set; }
         public string BrandName { get; set; }
         public virtual ICollection<Car> Cars { get; set; }
-
+        
+        //public virtual ICollection<Type> Types { get; set; }
+        
         public Brand()
         {
             Cars = new List<Car>();
+            //Types = new List<Type>();
         }
     }
+
+    //public class Type
+    //{
+    //    [Key]
+    //    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    //    public int Id { get; set; }
+    //    public string TypeName { get; set; }
+    //    public int BrandId { get; set; }
+    //    public Brand Brands { get; set; }
+    //}
 
     public enum Category
     {

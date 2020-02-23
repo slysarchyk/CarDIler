@@ -3,7 +3,7 @@
 @model CarDIler.ViewModel.AddCarViewModel
 @inject SqlContext SqlContext
 @{
-    ViewData["Title"] = "Додати автомобіль";
+    ViewData["Title"] = "Add car";
 
     var brands = await SqlContext.Brands.ToListAsync();
     var brandsSelectList = brands.Select(b => new SelectListItem(b.BrandName, b.Id.ToString()));
@@ -37,8 +37,8 @@
                             <input asp-for="Name" type="text" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label asp-for="Year" class="control-label">Year (1900 - 2100)</label>
-                            <input asp-for="Year" type="number" class="form-control">
+                            <label asp-for="Year" class="control-label">Year</label>
+                            <input asp-for="Year" type="number" min="1900" max="2100" class="form-control">
                         </div>
                         <div class="col-md-6">
                             <label asp-for="Engine" class="control-label">Engine</label>

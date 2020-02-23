@@ -16,7 +16,7 @@ namespace CarDIler.Controllers
 
         public HomeController(SqlContext context) {_db = context;}
 
-        public IActionResult Index(int? brand, int page = 1)
+        public IActionResult Index(int? brand, int year, int page = 1)
         {
             int pageSize = 6;
 
@@ -26,6 +26,10 @@ namespace CarDIler.Controllers
             if (brand != null && brand != 0)
             {
                 queryable = queryable.Where(b => b.BrandId == brand);
+            }
+            if (year > 1900 && year < 2100)
+            {
+                queryable = queryable.Where(b => b.Year == year);
             }
 
             List<Brand> brands = _db.Brands.ToList();
@@ -44,8 +48,12 @@ namespace CarDIler.Controllers
                     ToList(),
                 PageViewModels = pvw,
                 Brands = new SelectList(brands, "Id", "BrandName"),
-                LastCar = _db.Cars.Where(s => s.Sold == false).OrderByDescending(x => x.Id).FirstOrDefault(),
-                AvalibleCar = _db.Cars.AsTracking().Count(x => x.Sold == false)
+                Year = year,
+                LastCar = _db.Cars.AsNoTracking().
+                    Where(s => s.Sold == false).
+                    OrderByDescending(x => x.Id).
+                    FirstOrDefault(),
+                AvalibleCar = _db.Cars.AsNoTracking().Count(x => x.Sold == false)
             };
 
             return View(hvw);
