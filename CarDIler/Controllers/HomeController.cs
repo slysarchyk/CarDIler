@@ -31,11 +31,11 @@ namespace CarDIler.Controllers
             {
                 queryable = queryable.Where(y => y.Year == year);
             }
-            if (category != 0)
+            if (category > 0)
             {
                 queryable = queryable.Where(c => c.Category == category);
             }
-            if (fuel != 0)
+            if (fuel > 0)
             {
                 queryable = queryable.Where(f => f.Fuel == fuel);
             }
