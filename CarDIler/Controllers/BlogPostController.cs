@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using CarDIler.Data.Models;
 using CarDIler.Models;
 using CarDIler.ViewModel;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +50,7 @@ namespace CarDIler.Controllers
                 {
                     Posts = post
                 };
-                return View(fpvw);
+                return PartialView(fpvw);
             }
             return NotFound();
         }

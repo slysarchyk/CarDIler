@@ -4,46 +4,41 @@
     ViewData["Title"] = "DetalPost";
 }
 
-<div class="ftco-blocks-cover-1">
-    <div class="ftco-cover-1 innerpage overlay" style="background-image: url('@Url.Content(Model.Posts.CoverPath)')">
-        <div class="container">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-lg-6 text-center">
-                    <span class="d-block mb-3 text-white" data-aos="fade-up">@Model.Posts.Date 
-                    <span class="mx-2 text-primary">&bullet;</span> by @Model.Posts.AddedBy</span>
-                    <h1 class="mb-4" data-aos="fade-up" data-aos-delay="100">@Model.Posts.Name</h1>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="lead">@Model.Posts.Name</h4>
+            <button class="close" data-dismiss="modal" area-hidden="true">x</button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12 blog-content">
+                    <img class="col-md-12 align-content-center" src="@Url.Content(Model.Posts.CoverPath)">
+                    @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                    {
+                        <hr />
+                        <p class="m-1">
+                            <a asp-action="EditBlogPost" 
+                               asp-controller="Admin" 
+                               asp-route-id="@Model.Posts.Id">
+                            <img src="~/svg/edit.svg" width="25" height="25" title="Edit">
+                            </a>
+                            <a asp-action="DelPost" 
+                               asp-controller="Admin" 
+                               asp-route-id="@Model.Posts.Id">
+                            <img src="~/svg/error.svg" width="25" height="25" title="Delete">
+                            </a>
+                        </p>
+                        <hr/>
+                    }
+                    <p class="text-justify"><span style="white-space: pre-line">@Model.Posts.Desc</span></p>
+                    <hr />
+                    <p>Date of publication: @Model.Posts.Date</p>
+                    @if (Model.Posts.DateEdit != null && Model.Posts.Date != Model.Posts.DateEdit)
+                    {
+                        <p>Date edit: @Model.Posts.DateEdit</p>
+                    }
+                    <p>Added by - @Model.Posts.AddedBy <span class="font-italic">Id: @Model.Posts.Id</span></p>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-
-<div class="site-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 blog-content">
-                <p class="lead">@Model.Posts.Name</p>
-                @if (ViewContext.HttpContext.User.IsInRole("Admin"))
-                {
-                    <hr/>
-                    <p class="m-1">
-                        <a asp-action="EditPost" asp-controller="Admin" asp-route-id="@Model.Posts.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a>
-                        <a asp-action="DelPost" asp-controller="Admin" asp-route-id="@Model.Posts.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a>
-                    </p>
-                    <hr/>
-                }
-                <p><span class="lead" style="white-space: pre-line"></span> @Model.Posts.Desc</p>
-                <hr />
-                <p><span class="lead">Date of publication:</span> @Model.Posts.Date</p>
-                
-                @if (Model.Posts.DateEdit != null && Model.Posts.Date != Model.Posts.DateEdit)
-                {
-                    <p><span class="lead">Date edit:</span> @Model.Posts.DateEdit</p>
-                }
-                <hr />
-                <p class="lead">Post id: @Model.Posts.Id <span class="font-italic">Added by - @Model.Posts.AddedBy</span></p>
-            </div>
-        </div>
-    </div>
-</div>
