@@ -16,7 +16,7 @@ namespace CarDIler.Controllers
 
         public HomeController(SqlContext context) {_db = context;}
 
-        public IActionResult Index(int? brand, int year, int page = 1)
+        public IActionResult Index(int? brand, int year, Category category, Fuel fuel, int page = 1)
         {
             int pageSize = 6;
 
@@ -29,7 +29,15 @@ namespace CarDIler.Controllers
             }
             if (year > 1900 && year < 2100)
             {
-                queryable = queryable.Where(b => b.Year == year);
+                queryable = queryable.Where(y => y.Year == year);
+            }
+            if (category != 0)
+            {
+                queryable = queryable.Where(c => c.Category == category);
+            }
+            if (fuel != 0)
+            {
+                queryable = queryable.Where(f => f.Fuel == fuel);
             }
 
             List<Brand> brands = _db.Brands.ToList();
