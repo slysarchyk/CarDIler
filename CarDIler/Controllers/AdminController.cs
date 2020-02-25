@@ -180,7 +180,7 @@ namespace CarDIler.Controllers
 
         //секція блогу
         [HttpGet]
-        public ActionResult AddPost() => View();
+        public ActionResult AddPost() => PartialView();
 
         [HttpPost]
         public async Task<ActionResult> AddPost(AddBlogPostViewModel post, IFormFile cover)
@@ -205,7 +205,7 @@ namespace CarDIler.Controllers
 
                 return RedirectToAction("Index", "BlogPost");
             }
-            return View();
+            return PartialView();
         }
 
         [HttpGet]
@@ -222,7 +222,7 @@ namespace CarDIler.Controllers
 
             var mapBlogPost = _mapper.Map<BlogPost, EditBlogPostViewModel>(post);
 
-            return View(mapBlogPost);
+            return PartialView(mapBlogPost);
         }
 
         [HttpPost]
@@ -246,7 +246,7 @@ namespace CarDIler.Controllers
                 return RedirectToAction("Index", "BlogPost");
             }
 
-            return View(mapBlogPost);
+            return PartialView(mapBlogPost);
         }
 
         [HttpGet]

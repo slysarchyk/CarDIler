@@ -49,57 +49,59 @@
                 <div class="col-12">
 
                     <form class="trip-form" method="get">
-                        <div class="row align-items-center mb-4">
-                            <div class="col-md-6">
-                                <h3 class="m-0">Find your car</h3>
+                            <div class="row align-items-center mb-4">
+                                <div class="col-md-6">
+                                    <h3 class="m-0">Find your car</h3>
+                                </div>
+                                <div class="col-md-6 text-md-right">
+                                    <span class="text-primary">@Model.AvalibleCar</span> <span>cars available</span>
+                                </div>
                             </div>
-                            <div class="col-md-6 text-md-right">
-                                <span class="text-primary">@Model.AvalibleCar</span> <span>cars available</span>
+                            <div class="row">
+                                <div class="form-group col-md-3">
+                                    <label for="cf-1">Car brand</label>
+                                    @Html.DropDownList("brand", Model.Brands as SelectList,
+                                   htmlAttributes: new { @class = "form-control" })
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label for="cf-1">Year of production</label>
+                                    @Html.TextBox("year", Model.Year,
+                                   DateTime.Now.Year.ToString(),
+                                   htmlAttributes: new
+                                   {
+                                       @class = "form-control",
+                                       @type = "number",
+                                       @min = "1900",
+                                       @max = "2100",
+                                       @value = "2016"
+                                   })
+                                </div>
+                                <div class="form-group, col-md-3">
+                                    <label for="cf-1">Category</label>
+                                    @Html.DropDownList("category",
+                                   Html.GetEnumSelectList(typeof(Category)), "All",
+                                   htmlAttributes: new { @class = "form-control"})
+                                </div>
+                                <div class="form-group, col-md-3">
+                                    <label for="cf-1">Fuel</label>
+                                    @Html.DropDownList("fuel",
+                                   Html.GetEnumSelectList(typeof(Fuel)), "All",
+                                   htmlAttributes: new { @class = "form-control"})
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-2">
-                                <label for="cf-1">Car brand</label>
-                                @Html.DropDownList("brand", Model.Brands as SelectList,
-                               htmlAttributes: new { @class = "form-control" })
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input type="submit" value="Search" class="btn btn-outline-dark">
+                                </div>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label for="cf-1">Year of production</label>
-                                @Html.TextBox("year", Model.Year, 
-                               DateTime.Now.Year.ToString(),
-                               htmlAttributes: new 
-                               {
-                                   @class = "form-control", 
-                                   @type = "number",
-                                   @min = "1900",
-                                   @max = "2100",
-                                   @value = "2016"
-                               })
-                            </div>
-                            <div class="form-group, col-md-2">
-                                <label for="cf-1">Category</label>
-                                @Html.DropDownList("category",
-                               Html.GetEnumSelectList(typeof(Category)), "All",
-                               htmlAttributes: new { @class = "form-control"})
-                            </div>
-                            <div class="form-group, col-md-2">
-                                <label for="cf-1">Fuel</label>
-                                @Html.DropDownList("fuel",
-                               Html.GetEnumSelectList(typeof(Fuel)), "All",
-                               htmlAttributes: new { @class = "form-control"})
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <input type="submit" value="Search" class="btn btn-outline-dark">
-                            </div>
-                        </div>
-                    </form>
+                        </form>
 
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <div class="site-section bg-light">
         <div class="container">
@@ -111,82 +113,93 @@
                     Add Car
                 </a><hr />
             }
-        <div class="row">
-            @foreach (var item in Model.Cars)
-            {
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="item-1">
-                        <a asp-action="FullCarInfo" asp-controller="Home" asp-route-id="@item.Id">
-                            <img src="@Url.Content(item.CoverPath)" alt="Image" style="display:inline-block; height:250px; max-width:100%;">
-                        </a>
-                        <div class="item-1-contents">
-                            <div class="text-center">
-                                <h3><a asp-action="FullCarInfo" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a></h3>
-                                <div class="rent-price"><span>$ @item.PriceBrutto</span></div>
-                            </div>
-                            <ul class="specs">
-                                <li>
-                                    <span>Brand</span>
-                                    <span class="spec">@item.Brand.BrandName</span>
-                                </li>
-                                <li>
-                                    <span>Distance</span>
-                                    <span class="spec">@item.Distance км</span>
-                                </li>
-                                <li>
-                                    <span>Year</span>
-                                    <span class="spec">@item.Year</span>
-                                </li>
-                                <li>
-                                    <span>Date</span>
-                                    <span class="spec">@item.Date</span>
-                                </li>
-                                @if (ViewContext.HttpContext.User.IsInRole("Admin"))
-                                {
-                                    if (item.Sold == false)
-                                    {
+
+            <div class="row">
+                    @foreach (var item in Model.Cars)
+                    {
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="item-1">
+                                <a asp-action="FullCarInfo" asp-controller="Home" asp-route-id="@item.Id">
+                                    <img src="@Url.Content(item.CoverPath)" alt="Image" style="display:inline-block; height:250px; max-width:100%;">
+                                </a>
+                                <div class="item-1-contents">
+                                    <div class="text-center">
+                                        <h3><a asp-action="FullCarInfo" asp-controller="Home" asp-route-id="@item.Id">@item.Name</a></h3>
+                                        <div class="rent-price"><span>$ @item.PriceBrutto</span></div>
+                                    </div>
+                                    <ul class="specs">
                                         <li>
-                                            <span>Status</span>
-                                            <span class="spec text-success font-weight-bold">For Sale</span>
+                                            <span>Brand</span>
+                                            <span class="spec">@item.Brand.BrandName</span>
                                         </li>
-                                    }
-                                    <li>
-                                        <span class="m-1"><a asp-action="EditCar" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/edit.svg" width="25" height="25" title="Edit"></a></span>
-                                        <span class="m-1"><a asp-action="DelCar" asp-controller="Admin" asp-route-id="@item.Id"><img src="~/svg/error.svg" width="25" height="25" title="Delete"></a></span>
-                                    </li>
-                                }
-                            </ul>
+                                        <li>
+                                            <span>Distance</span>
+                                            <span class="spec">@item.Distance км</span>
+                                        </li>
+                                        <li>
+                                            <span>Year</span>
+                                            <span class="spec">@item.Year</span>
+                                        </li>
+                                        <li>
+                                            <span>Date</span>
+                                            <span class="spec">@item.Date</span>
+                                        </li>
+                                        @if (ViewContext.HttpContext.User.IsInRole("Admin"))
+                                        {
+                                            if (item.Sold == false)
+                                            {
+                                                <li>
+                                                    <span>Status</span>
+                                                    <span class="spec text-success font-weight-bold">For Sale</span>
+                                                </li>
+                                            }
+                                            <li>
+                                                <span class="m-1">
+                                                    <a asp-action="EditCar"
+                                                       asp-controller="Admin"
+                                                       asp-route-id="@item.Id">
+                                                        <img src="~/svg/edit.svg" width="25" height="25" title="Edit">
+                                                    </a>
+                                                </span>
+                                                <span class="m-1">
+                                                    <a asp-action="DelCar"
+                                                       asp-controller="Admin"
+                                                       asp-route-id="@item.Id">
+                                                        <img src="~/svg/error.svg" width="25" height="25" title="Delete">
+                                                    </a>
+                                                </span>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            }
-        </div>
 
             @if (Model.PageViewModels.HasPreviousPage)
-            {
-                <a asp-action="Index"
-                   asp-route-page="@(Model.PageViewModels.PageNumber - 1)"
-                   class="btn btn-outline-dark">
-                    <i class="glyphicon glyphicon-chevron-left"></i>
-                    Previous
-                </a>
-            }
-            @if (Model.PageViewModels.HasNextPage)
-            {
-                <a asp-action="Index"
-                   asp-route-page="@(Model.PageViewModels.PageNumber + 1)"
-                   class="btn btn-outline-dark">
-                    Next
-                    <i class="glyphicon glyphicon-chevron-right"></i>
-                </a>
-            }
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.PageViewModels.PageNumber - 1)"
+                       class="btn btn-outline-dark">
+                        <i class="glyphicon glyphicon-chevron-left"></i>
+                        Previous
+                    </a>
+                }
+                @if (Model.PageViewModels.HasNextPage)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.PageViewModels.PageNumber + 1)"
+                       class="btn btn-outline-dark">
+                        Next
+                        <i class="glyphicon glyphicon-chevron-right"></i>
+                    </a>
+                }
 
 
 
         </div>
     </div>
-
-
 }
 else
 {
@@ -202,4 +215,4 @@ else
             </div>
         </div>
     </div>
-}   
+}

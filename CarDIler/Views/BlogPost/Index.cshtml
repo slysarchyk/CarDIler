@@ -23,7 +23,7 @@
         {
             <a asp-action="AddPost"
                asp-controller="Admin"
-               class="btn btn-outline-success">
+               class="btn btn-outline-success posts">
                 Add Post
             </a>
             <hr />
@@ -42,18 +42,19 @@
                             <img src="@Url.Content(item.CoverPath)" alt="Image"
                                  class="img-fluid">
                         </a>
-                        <div class="post-entry-1-contents">
+                        <div class="post-entry-1-contents ">
 
                             <h2><a asp-action="FullPost" asp-controller="BlogPost" asp-route-id="@item.Id" class="posts">@item.Name</a></h2>
                             <span class="meta d-inline-block mb-3">@item.Date <span class="mx-2">by</span> @item.AddedBy</span>
-                            <p>@item.ShortDesc</p>
+                            <p class="text-justify">@item.ShortDesc</p>
 
                             @if (ViewContext.HttpContext.User.IsInRole("Admin"))
                             {
                                 <p class="m-1">
                                     <a asp-action="EditBlogPost"
                                        asp-controller="Admin"
-                                       asp-route-id="@item.Id">
+                                       asp-route-id="@item.Id"
+                                       class="posts">
                                         <img src="~/svg/edit.svg" width="25" height="25" title="Edit">
                                     </a>
                                     <a asp-action="DelPost"
